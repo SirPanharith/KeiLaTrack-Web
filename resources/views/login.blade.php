@@ -25,11 +25,12 @@
         <div class="w-full max-w-sm mx-auto bg-green-600 rounded-lg p-8">
           <h1 class="text-white text-3xl font-bold mb-2">Welcome</h1>
           <p class="text-green-200 text-sm mb-8">Login to your account</p>
-          <form>
-            ${UsernameInput()}
+          <form action="/login" method="POST">
+            @csrf
+            ${EmailInput()}
             ${PasswordInput()}
             ${RememberMeCheckbox()}
-            <button type="submit" class="${sharedClasses.button}"><a href="/">Login</a></button>
+            <button type="submit" class="${sharedClasses.button}">Login</button>
           </form>
           <p class="text-center text-green-200 text-sm mt-4">
             Haven't had an Account? <a href="/signup" class="text-white ${sharedClasses.link}">Sign Up</a>
@@ -38,13 +39,13 @@
       `;
     };
 
-    const UsernameInput = () => {
+    const EmailInput = () => {
       return `
         <div class="mb-4">
-          <label class="block text-green-200 text-sm mb-2" for="username">Username</label>
+          <label class="block text-green-200 text-sm mb-2" for="email">Email</label>
           <div class="${sharedClasses.inputContainer}">
-            <i class="${sharedClasses.inputIcon}"></i>
-            <input type="text" id="username" name="username" class="${sharedClasses.inputField}" placeholder="username">
+            <i class="fas fa-envelope text-green-700"></i>
+            <input type="email" id="email" name="Player_Email" class="${sharedClasses.inputField}" placeholder="Email">
           </div>
         </div>
       `;
@@ -56,7 +57,7 @@
           <label class="block text-green-200 text-sm mb-2" for="password">Password</label>
           <div class="${sharedClasses.inputContainer}">
             <i class="fas fa-lock text-green-700"></i>
-            <input type="password" id="password" name="password" class="${sharedClasses.inputField}" placeholder="Password">
+            <input type="password" id="password" name="Player_Password" class="${sharedClasses.inputField}" placeholder="Password">
           </div>
         </div>
       `;

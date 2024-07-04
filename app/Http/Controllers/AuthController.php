@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -74,8 +73,6 @@ class AuthController extends Controller
         }
     }
 
-
-
     public function register(Request $request)
     {
         // Validate the incoming request
@@ -115,7 +112,8 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        session()->forget(['token',]);
+        session()->flush();
+        //session()->forget(['token',]);
         return redirect('/login')->with('success', 'Logout successful');
     }
 }
