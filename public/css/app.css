@@ -1,0 +1,152 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.profile-picture img {
+    width: 50px; /* Fixed width for the profile image */
+    height: 50px; /* Fixed height for the profile image */
+    border-radius: 50%; /* Circular image */
+}
+
+.container {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 20px;
+    max-width: 600px; /* Container width */
+    margin: 20px auto;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Shadow for depth */
+}
+
+.header h1 {
+    text-align: center;
+}
+
+.performance-summary h2 {
+    margin-bottom: 10px;
+}
+
+.performance-summary ul {
+    list-style-type: none; /* No bullets */
+    padding: 0;
+}
+
+.performance-summary li {
+    padding: 8px;
+    border-bottom: 1px solid #fff; /* Separator */
+}
+
+.performance-summary li:last-child {
+    border-bottom: none; /* No bottom border on the last item */
+}
+
+.session-box {
+    background-color: #fff;
+    color: #333;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.session-box h3 {
+    color: #4CAF50;
+    text-align: center; /* Centering the Manchester United text */
+    margin-bottom: 20px;
+}
+
+.session-box p {
+    text-align: left; /* Ensuring other texts are left aligned */
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    display: block; /* Ensures the button is a block element */
+    margin: 20px auto; /* Automatically centers the button horizontally */
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Style the modal */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* Adjust margin to better center the modal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Adjust width to better fit the content */
+    border-radius: 8px;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around; /* Adjust spacing around the header */
+    margin-bottom: 20px;
+}
+
+.modal-profile-pic {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+.performance-icons {
+    display: flex;
+    justify-content: space-evenly; /* Distributes space evenly around items */
+    align-items: center;
+    margin-top: 10px;
+}
+
+.performance-icons img {
+    width: 24px; /* Adjust based on your icon size */
+    height: 24px;
+    margin-right: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
