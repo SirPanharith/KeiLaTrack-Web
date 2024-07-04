@@ -48,10 +48,10 @@ class PlayerController extends Controller
         }
     }
 
-    public function showPlayerSessions(Request $request)
+    public function showPlayerSessions()
     {
-        $playerInfoId = $request->query('playerInfoId', 3); // Set a default value for testing
-    
+        //$playerInfoId = $request->query('playerInfoId', 3); // Set a default value for testing
+        $playerInfoId = session('PlayerInfo_ID');
         // Fetch data from the API endpoint
         $response = Http::get("http://127.0.0.1:8000/api/session-info-by-playerinfo/{$playerInfoId}");
     

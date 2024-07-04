@@ -48,7 +48,9 @@ class AuthController extends Controller
                 ]);
 
                 // Redirect to the dashboard with a success message
+                //$playerInfoId = $data['player']['PlayerInfo_ID'];
                 return redirect('/')->with('success', 'Login successful');
+                //return redirect()->route('player.sessions', ['playerInfoId' => $playerInfoId]);
             } else {
                 // If the expected data is not present in the response, redirect back with an error message
                 return redirect()->back()->withErrors(['login' => 'Invalid login response']);
@@ -112,8 +114,8 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        session()->flush();
-        //session()->forget(['token',]);
+        //session()->flush();
+        session()->forget(['token',]);
         return redirect('/login')->with('success', 'Logout successful');
     }
 }
