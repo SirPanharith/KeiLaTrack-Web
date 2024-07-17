@@ -4,75 +4,62 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
-    public function showLoginForm()
+    // public function showLoginForm()
+    // {
+    //     return view('login');
+    // } 
+
+    // public function login(Request $request)
+    // {
+    //     $client = new Client();
+    //     $response = $client->post('http://127.0.0.1:8000/api/playersinfo/login', [
+    //         'form_params' => [
+    //             'Player_Email' => $request->input('Player_Email'),
+    //             'Player_Password' => $request->input('Player_Password')
+    //         ]
+    //     ]);
+
+    //     $data = json_decode($response->getBody(), true);
+
+    //     if (isset($data['token'])) {
+    //         // Save player info to session
+    //         session([
+    //             'PlayerInfo_ID' => $data['player']['PlayerInfo_ID'],
+    //             'Player_Name' => $data['player']['Player_Name'],
+    //             'Player_Email' => $data['player']['Player_Email'],
+    //             'api_token' => $data['token']
+    //         ]);
+
+    //         // Redirect to the home route
+    //         return redirect()->route('home');
+    //     }
+
+    //     // If login fails, redirect back with an error message
+    //     return back()->withErrors([
+    //         'email' => 'The provided credentials do not match our records.',
+    //     ]);
+    // }
+
+    public function logout(Request $request)
     {
-        return view('auth.login');
-    } 
+        Auth::logout();
+
+        // Clear all session data
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login')->with('success', 'Logout successful');
+    }
 
     public function showRegisterForm()
     {
         return view('signup');
-    } 
-
-    public function login(Request $request)
-    {
-        // Validate the incoming request
-        $request->validate([
-            'Player_Email' => 'required|email',
-            'Player_Password' => 'required|string',
-        ]);
-
-        // Making a POST request to the backend login API
-        $response = Http::post('http://127.0.0.1:8000/api/playersinfo/login', [
-            'Player_Email' => $request->input('Player_Email'),
-            'Player_Password' => $request->input('Player_Password'),
-        ]);
-
-        // Check if the request was successful
-        if ($response->successful()) {
-            $data = $response->json();
-
-            // Check if both 'player' and 'token' keys exist in the response data
-            if (isset($data['player']) && isset($data['token'])) {
-                // Store the player information and token in the session
-                session([
-                    'PlayerInfo_ID' => $data['player']['PlayerInfo_ID'],
-                    'Player_Name' => $data['player']['Player_Name'],
-                    'Player_Email' => $data['player']['Player_Email'],
-                    'Player_Image' => $data['player']['PlayerInfo_Image'],
-                    'token' => $data['token']
-                ]);
-
-                // Redirect to the dashboard with a success message
-                //$playerInfoId = $data['player']['PlayerInfo_ID'];
-                return redirect('/')->with('success', 'Login successful');
-                //return redirect()->route('player.sessions', ['playerInfoId' => $playerInfoId]);
-            } else {
-                // If the expected data is not present in the response, redirect back with an error message
-                return redirect()->back()->withErrors(['login' => 'Invalid login response']);
-            }
-        } else {
-            // If the response indicates failure
-            $data = $response->json();
-
-            // Handle specific error messages
-            if (isset($data['message'])) {
-                if ($data['message'] === 'Invalid email or password') {
-                    // Invalid credentials
-                    return redirect()->back()->withErrors(['login' => 'Invalid credentials']);
-                } elseif ($data['message'] === 'Your daycare is inactive') {
-                    // Daycare is inactive
-                    return redirect()->back()->withErrors(['login' => 'Your daycare is inactive']);
-                }
-            }
-
-            // Other error
-            return redirect()->back()->withErrors(['login' => 'An error occurred']);
-        }
     }
 
     public function register(Request $request)
@@ -83,14 +70,14 @@ class AuthController extends Controller
             'Player_Email' => 'required|email',
             'Player_Password' => 'required|string',
         ]);
-    
+
         // Make a POST request to the registration endpoint
         $response = Http::post('http://127.0.0.1:8000/api/playersinfo/register', [
             'Player_Name' => $request->input('Player_Name'),
             'Player_Email' => $request->input('Player_Email'),
             'Player_Password' => $request->input('Player_Password'),
         ]);
-    
+
         // Check if the request was successful
         if ($response->successful()) {
             // Redirect to the login page upon successful registration
@@ -98,24 +85,15 @@ class AuthController extends Controller
         } else {
             // If the response indicates failure
             $data = $response->json();
-    
+
             // Handle specific error messages if any
             if (isset($data['message'])) {
                 // If the registration failed due to some specific reason
                 return redirect()->back()->withErrors(['registration' => $data['message']]);
             }
-    
+
             // If there is no specific error message, redirect back with a general error message
             return redirect()->back()->withErrors(['registration' => 'An error occurred during registration']);
         }
-    }
-    
-
-    public function logout()
-    {
-        Auth::logout();
-        //session()->flush();
-        session()->forget(['token',]);
-        return redirect('/login')->with('success', 'Logout successful');
     }
 }

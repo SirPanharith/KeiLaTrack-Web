@@ -4,15 +4,22 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class CheckPlayerSession
 {
-    public function handle(Request $request, Closure $next): Response
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle(Request $request, Closure $next)
     {
-        if (!$request->session()->has('token')) {
-            return redirect('/login')->withErrors(['You must be logged in.']);
+        if (!session()->has('playerToken')) {
+            return redirect()->route('login.show');
         }
+
         return $next($request);
     }
 }

@@ -17,23 +17,22 @@
         <div class="performance-summary">
             <h2>Performance Summary:</h2>
             <div>
-                <!-- <strong>Player Info ID:</strong> {{ $playerInfoId }}<br>
-                <strong>Player Name:</strong> {{ $playerName }} -->
+                <!-- Add any additional player information here if needed -->
             </div>
-            @foreach ($playerData as $player)
-                @if (!empty($player['Sessions']))
+            @foreach ($playerData as $team)
+                @if (!empty($team['Sessions']))
                     <div class="team-summary">
-                        <h3>Team Name: {{ $player['Team_Name'] }}</h3>
-                        
-                            @foreach ($player['Sessions'] as $session)
+                        <h3>Team Name: {{ $team['Team_Name'] }}</h3>
+                        <ul>
+                            @foreach ($team['Sessions'] as $session)
                                 <li>
                                     <a style="text-decoration: none; color: white;" 
-                                       href="{{ route('sessionhistory', ['sessionId' => $session['Session_ID'], 'playerId' => $player['Player_ID']]) }}">
-                                       {{ $session['Session_Date']  }} - {{ $player['Team_Name'] }}
+                                       href="{{ route('sessionhistory', ['sessionId' => $session['Session_ID'], 'playerId' => $team['Player_ID']]) }}">
+                                       {{ $session['Session_Date'] }} - {{ $team['Team_Name'] }}
                                     </a>
                                 </li>
                             @endforeach
-                        
+                        </ul>
                     </div>
                 @endif
             @endforeach

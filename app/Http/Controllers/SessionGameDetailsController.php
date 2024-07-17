@@ -114,4 +114,32 @@ class SessionGameDetailsController extends Controller
             return response()->json(['message' => 'Failed to create note'], 500);
         }
     }
+
+    // public function show()
+    // {
+    //     $playerInfoId = session('playerInfoId');
+
+    //     // Debugging: Check if PlayerInfoId is retrieved correctly from session
+    //     if (!$playerInfoId) {
+    //         return redirect()->route('login.show')->withErrors(['message' => 'Session expired or invalid. Please log in again.']);
+    //     }
+
+    //     // Fetch data from the API endpoint
+    //     $response = Http::get("http://127.0.0.1:8000/api/session-info-by-playerinfo/{$playerInfoId}");
+
+    //     if ($response->successful()) {
+    //         $data = $response->json();
+
+    //         // Return the view with the fetched data
+    //         return view('home', [
+    //             'playerInfoId' => $data['PlayerInfo_ID'],
+    //             'playerName' => $data['Player_Name'],
+    //             'playerData' => $data['Data'],
+    //         ]);
+    //     }
+
+    //     // Handle the case where the API request fails
+    //     return response()->json(['error' => 'Failed to fetch data from the API'], 500);
+    // }
+    
 }

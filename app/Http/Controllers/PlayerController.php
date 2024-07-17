@@ -48,27 +48,59 @@ class PlayerController extends Controller
         }
     }
 
+    
+
     public function showPlayerSessions()
-    {
-        //$playerInfoId = $request->query('playerInfoId', 3); // Set a default value for testing
-        $playerInfoId = session('PlayerInfo_ID');
-        // Fetch data from the API endpoint
-        $response = Http::get("http://127.0.0.1:8000/api/session-info-by-playerinfo/{$playerInfoId}");
-    
-        if ($response->successful()) {
-            $data = $response->json();
-    
+{
+    $playerInfoId = session('playerInfoId');
+
+    // Check if PlayerInfoId is retrieved correctly from session
+    if (!$playerInfoId) {
+        \Log::error('PlayerInfoId not found in session');
+        return redirect()->route('login.show')->withErrors(['message' => 'Session expired or invalid. Please log in again.']);
+    }
+
+    \Log::info('PlayerInfoId from session: ', ['playerInfoId' => $playerInfoId]);
+
+    // Fetch data from the API endpoint
+    $response = Http::get("http://127.0.0.1:8000/api/session-info-by-playerinfo/{$playerInfoId}");
+
+    if ($response->successful()) {
+        $data = $response->json();
+
+        // Log data for debugging
+        \Log::info('API Response Data: ', $data);
+
+        // dd($data);
+
+        // Ensure the data format is correct and contains expected keys
+        if (isset($data['PlayerInfo_ID'], $data['Player_Name'], $data['Data'])) {
             // Return the view with the fetched data
             return view('home', [
                 'playerInfoId' => $data['PlayerInfo_ID'],
                 'playerName' => $data['Player_Name'],
                 'playerData' => $data['Data'],
             ]);
-        }
-    
-        // Handle the case where the API request fails
-        return response()->json(['error' => 'Failed to fetch data from the API'], 500);
+        } 
+
     }
+
+    dd($response->json());
+
+    // Handle the case where the API request fails
+    \Log::error('Failed to fetch data from the API', ['status' => $response->status()]);
+    return response()->json(['error' => 'Failed to fetch data from the API'], 500);
+}
+
+
+    public function show()
+    {
+        // Fetch player information using $playerInfoId and pass it to the view
+        
+
+        return view('player.information', compact('player'));
+    }
+
 }
 
 

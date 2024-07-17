@@ -2,7 +2,7 @@
     <a href="/" style="text-decoration: none; color: white;">KeiLaTrack</a>
 </div>
 <div class="profile-picture">
-    <a href="{{ route('player.information', ['playerInfoId' => session('PlayerInfo_ID')]) }}">
+    <a href="{{ route('player.information') }}">
         @if (!empty(session('Player_Image')))
             <img src="{{ session('Player_Image') }}" alt="Profile Picture">
         @else
