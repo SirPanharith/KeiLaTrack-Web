@@ -10,7 +10,7 @@ class PlayerController extends Controller
     public function getPlayerInfo()
     {
         // Retrieve PlayerInfo_ID from the session
-        $playerInfoId = session('PlayerInfo_ID');
+        $playerInfoId = session('playerInfoId');
 
         // Make a GET request to the API endpoint
         $response = Http::get('http://127.0.0.1:8000/api/players/' . $playerInfoId);
@@ -26,6 +26,7 @@ class PlayerController extends Controller
             return response()->json(['error' => 'Failed to retrieve player data from the API'], $response->status());
         }
     }
+
 
     public function updatePlayerInfo(Request $request)
     {

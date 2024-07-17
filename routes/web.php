@@ -17,7 +17,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 // Middleware protected routes
 Route::middleware(['authplayer'])->group(function () {
     Route::get('/home', [PlayerController::class, 'showPlayerSessions'])->name('home');
-    Route::get('/playerinformation', [PlayerController::class, 'show'])->name('player.information');
+    Route::get('/playerinformation', [PlayerController::class, 'getPlayerInfo'])->name('player.information');
     Route::get('/sessionhistory/{sessionId}/{playerId}', [SessionGameDetailsController::class, 'getSessionGame'])->name('sessionhistory');
     Route::post('/save-note', [SessionGameDetailsController::class, 'savePlayerNote'])->name('saveNote');
     Route::post('/create-note', [SessionGameDetailsController::class, 'createPlayerNote'])->name('createNote');
