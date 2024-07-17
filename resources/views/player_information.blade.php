@@ -115,7 +115,6 @@
             <img src="{{ $player['player_info']['PlayerInfo_Image'] }}" alt="Player Image" class="player-image">
             <h1>Player Information:</h1>
             <table class="info-table">
-            @if(isset($player))
                 <tr>
                     <td><strong>Name:</strong></td>
                     <td>{{ $player['player_info']['Player_Name'] }}</td>
@@ -128,19 +127,21 @@
                     <td><strong>Password:</strong></td>
                     <td><input type="password" value="{{ $player['player_info']['Player_Password'] }}" readonly></td>
                 </tr> -->
+            </table>
+            <h2>Teams and Positions:</h2>
+            <table class="info-table">
                 <tr>
                     <th>Team</th>
                     <th>Primary Position</th>
                     <th>Secondary Position</th>
                 </tr>
+                @foreach ($player['players'] as $playerDetail)
                 <tr>
-                    <td>{{ $player['team']['Team_Name'] }}</td>
-                    <td>{{ $player['primary_position']['Position'] }}</td>
-                    <td>{{ $player['secondary_position']['Position'] }}</td>
+                    <td>{{ $playerDetail['Team'] }}</td>
+                    <td>{{ $playerDetail['PrimaryPosition'] }}</td>
+                    <td>{{ $playerDetail['SecondaryPosition'] }}</td>
                 </tr>
-                @else
-                    <p>No player information available.</p>
-                @endif
+                @endforeach
             </table>
             <button id="edit-info-btn">Edit Information</button>
             <form id="edit-info-form" class="edit-form">
@@ -152,7 +153,10 @@
                 <button type="submit">Save Changes</button>
             </form>
         </div><br>
-        <button><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></button>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+            @csrf
+            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Logout</button>
+        </form>
     </div>
 
     <script>

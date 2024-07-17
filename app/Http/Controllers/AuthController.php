@@ -48,14 +48,22 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        // Logout the user
         Auth::logout();
 
-        // Clear all session data
+        // Invalidate the session
         $request->session()->invalidate();
+
+        // Regenerate the session token to prevent CSRF attacks
         $request->session()->regenerateToken();
 
+        // Clear all session data
+        $request->session()->flush();
+
+        // Redirect to login page with success message
         return redirect('/login')->with('success', 'Logout successful');
     }
+
 
     public function showRegisterForm()
     {

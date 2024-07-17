@@ -13,7 +13,7 @@ class PlayerController extends Controller
         $playerInfoId = session('playerInfoId');
 
         // Make a GET request to the API endpoint
-        $response = Http::get('http://127.0.0.1:8000/api/players/' . $playerInfoId);
+        $response = Http::get('http://127.0.0.1:8000/api/playersinfo/' . $playerInfoId);
 
         // Check if the request was successful
         if ($response->successful()) {
@@ -26,6 +26,7 @@ class PlayerController extends Controller
             return response()->json(['error' => 'Failed to retrieve player data from the API'], $response->status());
         }
     }
+
 
 
     public function updatePlayerInfo(Request $request)
