@@ -12,7 +12,11 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('login');
+        return response()
+            ->view('login')
+            ->header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', 'Sun, 02 Jan 1990 00:00:00 GMT');
     }
 
     public function login(Request $request)

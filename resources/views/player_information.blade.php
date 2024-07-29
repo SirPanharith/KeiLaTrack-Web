@@ -7,12 +7,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Information</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
         body, html {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #e9e9e9;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
         }
 
         .navbar {
@@ -38,11 +40,11 @@
         .container {
             background-color: #ffffff;
             color: #333;
-            padding: 20px;
-            max-width: 600px;
-            margin: 20px auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+            max-width: 700px;
+            margin: 30px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
@@ -53,82 +55,106 @@
         }
 
         .player-image {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .info-table {
             margin: auto;
-            width: 90%;
+            width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
         .info-table th, .info-table td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
         }
 
         .info-table th {
             background-color: #4CAF50;
             color: white;
+            text-align: center;
         }
 
         .info-table td {
             background-color: #fff;
             color: #333;
+            text-align: center;
         }
 
-        h1 {
+        h1, h2 {
             margin-bottom: 20px;
         }
 
-        .edit-form {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .edit-form input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        .edit-form button {
-            padding: 10px 20px;
+        .btn-custom {
             background-color: #4CAF50;
             color: white;
             border: none;
             cursor: pointer;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .edit-form button:hover {
+        .btn-custom:hover {
             background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .modal-header {
+            justify-content: center;
+            border-bottom: none;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .button-group .btn-custom {
+            margin: 0 10px;
+            min-width: 200px; /* Make the buttons the same size */
+            height: 55px; /* Adjust height as needed */
+        }
+
+        .info-table .info-label {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+
+        .container-bg {
+            background-color: #f7f7f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container container-bg">
         <div class="player-info">
             <img src="{{ $player['player_info']['PlayerInfo_Image'] }}" alt="Player Image" class="player-image">
-            <h1>Player Information:</h1>
+            <h1>Player Information</h1>
             <table class="info-table">
                 <tr>
-                    <td><strong>Name:</strong></td>
+                    <th class="info-label"><strong>Name:</strong></th>
                     <td>{{ $player['player_info']['Player_Name'] }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Email Address:</strong></td>
+                    <th class="info-label"><strong>Email Address:</strong></th>
                     <td>{{ $player['player_info']['Player_Email'] }}</td>
                 </tr>
-                <!-- <tr>
-                    <td><strong>Password:</strong></td>
-                    <td><input type="password" value="{{ $player['player_info']['Player_Password'] }}" readonly></td>
-                </tr> -->
             </table>
-            <h2>Teams and Positions:</h2>
+
+            <h2>Teams and Positions</h2>
             <table class="info-table">
                 <tr>
                     <th>Team</th>
@@ -143,31 +169,77 @@
                 </tr>
                 @endforeach
             </table>
-            <button id="edit-info-btn">Edit Information</button>
-            <form id="edit-info-form" class="edit-form">
-                @csrf
-                <input type="hidden" name="player_info_id" value="{{ $player['player_info']['PlayerInfo_ID'] }}">
-                <input type="text" name="player_name" value="{{ $player['player_info']['Player_Name'] }}" required>
-                <input type="email" name="player_email" value="{{ $player['player_info']['Player_Email'] }}" required>
-                <input type="password" name="player_password" value="{{ $player['player_info']['Player_Password'] }}" required>
-                <button type="submit">Save Changes</button>
-            </form>
-        </div><br>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-            @csrf
-            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Logout</button>
-        </form>
+
+            <div class="button-group">
+                <button id="edit-info-btn" class="btn-custom" data-toggle="modal" data-target="#editInfoModal">
+                    <i class="fas fa-edit"></i> Edit Player Information
+                </button>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="btn-custom">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 
+    <!-- Edit Player Information Modal -->
+    <div class="modal fade" id="editInfoModal" tabindex="-1" role="dialog" aria-labelledby="editInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editInfoModalLabel">Edit Player Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-info-form" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="player_info_id" value="{{ $player['player_info']['PlayerInfo_ID'] }}">
+                        
+                        <div class="form-group">
+                            <label for="player_email">Email Address</label>
+                            <input type="email" class="form-control" name="player_email" value="{{ $player['player_info']['Player_Email'] }}" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="player_name">Name</label>
+                            <input type="text" class="form-control" name="player_name" value="{{ $player['player_info']['Player_Name'] }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="current_password">Enter Your Password</label>
+                            <input type="password" class="form-control" name="current_password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="new_password">Enter A New Password</label>
+                            <input type="password" class="form-control" name="new_password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="player_image">Update Player Image</label>
+                            <input type="file" class="form-control" name="player_image" id="player_image" accept="image/*">
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn-custom">Update Information</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var editInfoBtn = document.getElementById('edit-info-btn');
             var editInfoForm = document.getElementById('edit-info-form');
-
-            editInfoBtn.onclick = function () {
-                editInfoForm.style.display = 'block';
-                editInfoBtn.style.display = 'none';
-            };
 
             editInfoForm.onsubmit = function (event) {
                 event.preventDefault();
@@ -177,14 +249,8 @@
 
                 fetch(`http://127.0.0.1:8000/api/playersinfo/${playerId}`, {
                     method: 'PUT',
-                    body: JSON.stringify({
-                        PlayerInfo_ID: playerId,
-                        Player_Name: formData.get('player_name'),
-                        Player_Email: formData.get('player_email'),
-                        Player_Password: formData.get('player_password'),
-                    }),
+                    body: formData,
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
                 })
@@ -201,11 +267,12 @@
                     console.error('Error updating information:', error);
                 });
 
-                editInfoForm.style.display = 'none';
-                editInfoBtn.style.display = 'block';
+                $('#editInfoModal').modal('hide');
             };
         });
+
     </script>
+
 </body>
 </html>
 @endsection

@@ -38,7 +38,7 @@ class SessionGameDetailsController extends Controller
 
             // Fetch the player note
             $noteResponse = Http::get("http://127.0.0.1:8000/api/player-notes/{$sessionId}/{$playerId}");
-            $playerNote = $noteResponse->successful() ? $noteResponse->json()['PlayerNote'] : '(--- Click here to add notes ---)';
+            $playerNote = $noteResponse->successful() ? $noteResponse->json()['PlayerNote'] : '(Add your note)';
 
             // Return the view with individual elements
             return view('sessionhistory', compact(

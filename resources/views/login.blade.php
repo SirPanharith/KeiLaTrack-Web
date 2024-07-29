@@ -1,3 +1,5 @@
+<!-- login.blade.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,14 +27,12 @@
       <div class="mb-4">
         <label class="block text-green-200 text-sm mb-2" for="email">Email</label>
         <div class="flex items-center bg-green-300 rounded-full px-4 py-2">
-          <i class="fas fa-envelope text-green-700"></i>
           <input type="email" id="email" name="Player_Email" class="bg-transparent flex-1 ml-2 outline-none" placeholder="Email" required>
         </div>
       </div>
       <div class="mb-6">
         <label class="block text-green-200 text-sm mb-2" for="password">Password</label>
         <div class="flex items-center bg-green-300 rounded-full px-4 py-2">
-          <i class="fas fa-lock text-green-700"></i>
           <input type="password" id="password" name="Player_Password" class="bg-transparent flex-1 ml-2 outline-none" placeholder="Password" required>
         </div>
       </div>
@@ -41,13 +41,12 @@
           <input type="checkbox" class="form-checkbox text-green-500">
           <span class="ml-2">Remember me</span>
         </label>
-        <a href="#" class="text-sm text-green-200 hover:underline">Forgot Password?</a>
+        <a href="{{ route('forgot_password.show') }}" class="text-sm text-green-200 hover:underline">Forgot Password?</a>
       </div>
       <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-full transition-colors">Login</button>
     </form>
-
     <p class="text-center text-green-200 text-sm mt-4">
-      Haven't had an Account? <a href="/signup" class="text-white text-sm text-green-200 hover:underline">Sign Up</a>
+      Haven't had an Account? <a href="{{ route('register.form') }}" class="text-white text-sm text-green-200 hover:underline">Sign Up</a>
     </p>
   </div>
   @if ($errors->any())
@@ -66,7 +65,6 @@
         sucessAlert.remove();
       }
     }, 10000);
-
-</script>
+  </script>
 </body>
 </html>

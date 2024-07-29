@@ -6,6 +6,7 @@ use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\SessionGameDetailsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PlayerNoteController;
+use App\Http\Controllers\ForgotPasswordController;
 
 // Auth Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.show');
@@ -13,6 +14,12 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgot_password.show');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('forgot_password.post');
+Route::get('/otp', [ForgotPasswordController::class, 'showOtpForm'])->name('otp.form');
+Route::post('/otp', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset.post');
+// Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('password.reset.show');
+// Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset.post');
 
 // Middleware protected routes
 Route::middleware(['authplayer'])->group(function () {
