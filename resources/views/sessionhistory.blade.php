@@ -44,6 +44,7 @@
             border-radius: 8px;
             color: white;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .performance-summary h2 {
@@ -106,11 +107,25 @@
             margin-bottom: 0;
         }
 
+        .note-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
         .note-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-bottom: auto;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: auto;
         }
 
         .btn-custom {
@@ -133,11 +148,6 @@
             font-size: 12px;
         }
 
-        .btn-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
         .modal {
             display: none;
             position: fixed;
@@ -155,20 +165,25 @@
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
+            width: 500px;
+            height: 500px;
             border-radius: 10px;
+            border: 4px solid #4CAF50; /* Green border */
         }
 
         .modal-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-direction: column;
+            padding-bottom: 10px;
         }
 
-        .modal-header img {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
+        .modal-header h2, .modal-header h3 {
+            text-align: center;
+            width: 100%;
+            color: #4CAF50; /* Green color for the text */
+            margin: 5px 0; /* Reduce the margin */
         }
 
         .close {
@@ -176,6 +191,9 @@
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
 
         .close:hover,
@@ -244,6 +262,65 @@
             margin-top: 10px;
         }
 
+        .performance-icons-container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .performance-icon-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .performance-icon-box img {
+            width: 80px;
+            height: 80px;
+            crossorigin: anonymous;
+        }
+
+        .performance-icon-box p {
+            margin: 0;
+            font-size: 18px;
+            color: #4CAF50;
+        }
+
+        .time-played {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .position-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+        }
+
+        .position-stats h3, .position-stats table {
+            margin: 0;
+        }
+
+        .session-details-box {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .session-details-box .details {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -269,19 +346,38 @@
                         <div class="note-box">
                             <div class="note-container">
                                 <span><strong><i class="fas fa-sticky-note"></i> Note:</strong> <span id="note-content">{{ $playerNote ?? '(Add your note)' }}</span></span>
+                            </div>
+                            <div class="btn-container">
                                 <button id="edit-note" class="btn-custom btn-small">Edit Note</button>
                             </div>
                         </div>
-
-
-
                     </div>
                     <div class="right-column">
                         <div class="position-stats">
-                            <p><strong>Primary Position:</strong> {{ $primaryPosition ?? 'N/A' }}</p>
-                            <p><strong>Secondary Position:</strong> {{ $secondaryPosition ?? 'N/A' }}</p>
-                            <p><strong>Player Stat:</strong> {{ $totalGoals ?? 0 }} Goals / {{ $totalAssists ?? 0 }} Assists</p>
-                            <p><strong><i class="fas fa-stopwatch-20"></i> Time Played:</strong> {{ $totalDuration ?? 'N/A' }}</p>
+                            <h3>Player Performance</h3>
+                            <table style="width: 100%; margin-bottom: 15px;">
+                                <tr>
+                                    <td><strong>Primary Position:</strong></td>
+                                    <td>{{ $primaryPosition ?? 'N/A' }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Secondary Position:</strong></td>
+                                    <td>{{ $secondaryPosition ?? 'N/A' }}</td>
+                                </tr>
+                            </table>
+                            <div class="time-played"><i class="fas fa-stopwatch-20"></i> Time Played: {{ $totalDuration ?? 'N/A' }}</div>
+                            <div class="performance-icons-container">
+                                <div class="performance-icon-box">
+                                    <p>Goal</p>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/9009/9009204.png" alt="Goal Icon" crossorigin="anonymous">
+                                    <p>{{ $totalGoals ?? 0 }}</p>
+                                </div>
+                                <div class="performance-icon-box">
+                                    <p>Assist</p>
+                                    <img src="https://cdn-icons-png.flaticon.com/256/893/893831.png" alt="Assist Icon" crossorigin="anonymous">
+                                    <p>{{ $totalAssists ?? 0 }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -310,23 +406,58 @@
 
     <!-- Popup Modal -->
     <div id="summaryModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content square-modal">
             <span class="close">&times;</span>
             <div class="modal-header">
-                <img src="{{ session('Player_Image') }}" alt="{{ session('Player_Name') }}" class="modal-profile-pic">
-                <h2>{{ $teamName ?? 'N/A' }}</h2>
-                <h2>{{ session('Player_Name') }}</h2>
+                <h2>Player Name Performance Summary</h2>
+                <h3>Match Result</h3>
+                <h2>{{ $teamName ?? 'N/A' }} {{ $sessionTotalGoals ?? 0 }} - {{ $manualAwayScore ?? 0 }} {{ $manualAwayName ?? 'N/A' }}</h2>
             </div>
             <div class="modal-body">
-                <p><strong>Date:</strong> {{ $sessionDate ?? 'N/A' }}</p>
-                <p><strong>Mode:</strong> {{ $sideId ?? 'N/A' }} Side, {{ $totalPlayerPerSide ?? 'N/A' }} vs {{ $totalPlayerPerSide ?? 'N/A' }}</p>
-                <p><strong>Result:</strong> {{ $teamName ?? 'N/A' }} {{ $sessionTotalGoals ?? 0 }} - {{ $manualAwayScore ?? 0 }} {{ $manualAwayName ?? 'N/A' }}</p>
-                <p><strong>Primary Position:</strong> {{ $primaryPosition ?? 'N/A' }}</p>
-                <p><strong>Secondary Position:</strong> {{ $secondaryPosition ?? 'N/A' }}</p>
-                <p><strong>Time Played:</strong> {{ $totalDuration ?? 'N/A' }}</p>
-                <div class="performance-icons">
-                    <img src="https://cdn-icons-png.flaticon.com/512/9009/9009204.png" alt="Goal Icon"> {{ $totalGoals ?? 0 }} Goals
-                    <img src="https://cdn-icons-png.flaticon.com/256/893/893831.png" alt="Assist Icon"> {{ $totalAssists ?? 0 }} Assists
+                <div class="flex-container">
+                    <div class="left-column">
+                        <div class="session-details-box">
+                            <div class="details">
+                                <p><strong><i class="fas fa-calendar-alt"></i> Session Date:</strong> {{ $sessionDate ?? 'N/A' }}</p>
+                                <p><strong><i class="fas fa-clock"></i> Time:</strong> {{ $sessionTime ?? 'N/A' }}</p>
+                                <p><strong><i class="fas fa-map-marked-alt"></i> Location:</strong> {{ $sessionLocation ?? 'N/A' }}</p>
+                                <p><strong><i class="fas fa-users"></i> Player per Side:</strong> {{ $totalPlayerPerSide ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                        <div class="past-performance note-box">
+                            <div class="note-container">
+                                <span><strong><i class="fas fa-sticky-note"></i> Previous Player History:</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-column">
+                        <div class="position-stats">
+                            <h3>Player Performance</h3>
+                            <table style="width: 100%; margin-bottom: 15px;">
+                                <tr>
+                                    <td><strong>Primary Position:</strong></td>
+                                    <td>{{ $primaryPosition ?? 'N/A' }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Secondary Position:</strong></td>
+                                    <td>{{ $secondaryPosition ?? 'N/A' }}</td>
+                                </tr>
+                            </table>
+                            <div class="time-played"><i class="fas fa-stopwatch-20"></i> Time Played: {{ $totalDuration ?? 'N/A' }}</div>
+                            <div class="performance-icons-container">
+                                <div class="performance-icon-box">
+                                    <p>Goal</p>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/9009/9009204.png" alt="Goal Icon" crossorigin="anonymous">
+                                    <p>{{ $totalGoals ?? 0 }}</p>
+                                </div>
+                                <div class="performance-icon-box">
+                                    <p>Assist</p>
+                                    <img src="https://cdn-icons-png.flaticon.com/256/893/893831.png" alt="Assist Icon" crossorigin="anonymous">
+                                    <p>{{ $totalAssists ?? 0 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <button id="download" class="btn-custom">Download</button>
@@ -403,13 +534,16 @@
                 }
             };
 
-            // Capture the modal content and download it as an image, excluding certain elements
+            // Capture the modal content and download it as an image, including external resources
             downloadBtn.onclick = function() {
                 // Hide elements that should not be in the screenshot
                 mainSpan.style.display = 'none';
                 downloadBtn.style.display = 'none';
 
+                // Configure html2canvas
                 html2canvas(document.querySelector(".modal-content"), {
+                    useCORS: true,
+                    allowTaint: true,
                     onclone: function (clonedDoc) {
                         // You can perform additional adjustments if needed here
                     }
@@ -428,9 +562,7 @@
             };
         });
     </script>
-
-
-
 </body>
 </html>
+
 @endsection

@@ -65,35 +65,39 @@ class SessionGameDetailsController extends Controller
         $noteResponse = Http::get("http://127.0.0.1:8000/api/player-notes/{$sessionId}/{$playerId}");
 
         if ($noteResponse->successful()) {
-            $noteId = $noteResponse->json()['PlayerNote_ID'];
+            $noteData = $noteResponse->json();
+            if (isset($noteData['PlayerNote_ID'])) {
+                $noteId = $noteData['PlayerNote_ID'];
 
-            // Update the existing player note
-            $response = Http::put("http://127.0.0.1:8000/api/player-notes/{$noteId}", [
-                'Session_ID' => $sessionId,
-                'Player_ID' => $playerId,
-                'PlayerNote' => $playerNote,
-            ]);
+                // Update the existing player note
+                $response = Http::put("http://127.0.0.1:8000/api/player-notes/{$noteId}", [
+                    'Session_ID' => $sessionId,
+                    'Player_ID' => $playerId,
+                    'PlayerNote' => $playerNote,
+                ]);
 
-            if ($response->successful()) {
-                return response()->json(['message' => 'Note updated successfully']);
-            } else {
-                return response()->json(['message' => 'Failed to update note'], 500);
-            }
-        } else {
-            // Handle the case where the note does not exist yet
-            $response = Http::post('http://127.0.0.1:8000/api/player-notes', [
-                'Session_ID' => $sessionId,
-                'Player_ID' => $playerId,
-                'PlayerNote' => $playerNote,
-            ]);
-
-            if ($response->successful()) {
-                return response()->json(['message' => 'Note created successfully']);
-            } else {
-                return response()->json(['message' => 'Failed to create note'], 500);
+                if ($response->successful()) {
+                    return response()->json(['message' => 'Note updated successfully']);
+                } else {
+                    return response()->json(['message' => 'Failed to update note'], 500);
+                }
             }
         }
+
+        // Handle the case where the note does not exist yet
+        $response = Http::post('http://127.0.0.1:8000/api/player-notes', [
+            'Session_ID' => $sessionId,
+            'Player_ID' => $playerId,
+            'PlayerNote' => $playerNote,
+        ]);
+
+        if ($response->successful()) {
+            return response()->json(['message' => 'Note created successfully']);
+        } else {
+            return response()->json(['message' => 'Failed to create note'], 500);
+        }
     }
+
 
     public function createPlayerNote(Request $request)
     {
