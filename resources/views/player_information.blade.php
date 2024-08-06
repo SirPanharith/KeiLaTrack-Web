@@ -31,10 +31,46 @@
             font-weight: bold;
         }
 
-        .profile-picture img {
-            width: 50px;
-            height: 50px;
+        .profile-picture {
+            position: relative;
+            width: 50px; /* same size as original */
+            height: 50px; /* same size as original */
             border-radius: 50%;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .profile-picture-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-picture-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .edit-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            color: #4CAF50;
         }
 
         .container {
@@ -52,14 +88,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        .player-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .info-table {
@@ -141,7 +169,12 @@
 <body>
     <div class="container container-bg">
         <div class="player-info">
-            <img src="{{ $player['player_info']['PlayerInfo_Image'] }}" alt="Player Image" class="player-image">
+            <div class="profile-picture-container">
+                <img src="{{ $player['player_info']['PlayerInfo_Image'] }}" alt="Player Image">
+                <div class="edit-icon" data-toggle="modal" data-target="#editInfoModal">
+                    <i class="fas fa-edit"></i>
+                </div>
+            </div>
             <h1>Player Information</h1>
             <table class="info-table">
                 <tr>
@@ -206,17 +239,17 @@
                         
                         <div class="form-group">
                             <label for="player_name">Name</label>
-                            <input type="text" class="form-control" name="player_name" value="{{ $player['player_info']['Player_Name'] }}" required>
+                            <input type="text" class="form-control" name="player_name" value="{{ $player['player_info']['Player_Name'] }}">
                         </div>
                         
                         <div class="form-group">
                             <label for="current_password">Enter Your Password</label>
-                            <input type="password" class="form-control" name="current_password" required>
+                            <input type="password" class="form-control" name="current_password">
                         </div>
                         
                         <div class="form-group">
                             <label for="new_password">Enter A New Password</label>
-                            <input type="password" class="form-control" name="new_password" required>
+                            <input type="password" class="form-control" name="new_password">
                         </div>
                         
                         <div class="form-group">
@@ -246,11 +279,21 @@
 
                 var formData = new FormData(editInfoForm);
                 var playerId = formData.get('player_info_id');
+                var data = {};
 
-                fetch(`http://127.0.0.1:8000/api/playersinfo/${playerId}`, {
+                if (formData.get('player_name')) {
+                    data.Player_Name = formData.get('player_name');
+                }
+                if (formData.get('current_password') && formData.get('new_password')) {
+                    data.current_password = formData.get('current_password');
+                    data.new_password = formData.get('new_password');
+                }
+
+                fetch(`http://127.0.0.1:8000/api/playersinfo/update-credentials/${playerId}`, {
                     method: 'PUT',
-                    body: formData,
+                    body: JSON.stringify(data),
                     headers: {
+                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
                 })
@@ -260,11 +303,12 @@
                         alert('Information updated successfully.');
                         location.reload();
                     } else {
-                        alert('Failed to update information.');
+                        alert(`Failed to update information: ${data.message}`);
                     }
                 })
                 .catch(error => {
                     console.error('Error updating information:', error);
+                    alert('An error occurred while updating information.');
                 });
 
                 $('#editInfoModal').modal('hide');
