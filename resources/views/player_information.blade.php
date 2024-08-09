@@ -10,6 +10,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
+        /* Your existing CSS styles */
         body, html {
             margin: 0;
             padding: 0;
@@ -170,8 +171,8 @@
     <div class="container container-bg">
         <div class="player-info">
             <div class="profile-picture-container">
-                <img src="{{ $player['player_info']['PlayerInfo_Image'] }}" alt="Player Image">
-                <div class="edit-icon" data-toggle="modal" data-target="#editInfoModal">
+                <img src="{{ $player['player_info']['PlayerInfo_Image'] }}" alt="Player Image" id="playerImage">
+                <div class="edit-icon" data-toggle="modal" data-target="#editImageModal">
                     <i class="fas fa-edit"></i>
                 </div>
             </div>
@@ -252,11 +253,6 @@
                             <input type="password" class="form-control" name="new_password">
                         </div>
                         
-                        <div class="form-group">
-                            <label for="player_image">Update Player Image</label>
-                            <input type="file" class="form-control" name="player_image" id="player_image" accept="image/*">
-                        </div>
-                        
                         <div class="text-center">
                             <button type="submit" class="btn-custom">Update Information</button>
                         </div>
@@ -267,55 +263,121 @@
         </div>
     </div>
 
+    <!-- Edit Player Image Modal -->
+    <div class="modal fade" id="editImageModal" tabindex="-1" role="dialog" aria-labelledby="editImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editImageModalLabel">Edit Player Image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-image-form" method="POST" enctype="multipart/form-data" action="{{ route('player.updateImage') }}">
+                        @csrf
+                        <input type="hidden" name="player_info_id" value="{{ $player['player_info']['PlayerInfo_ID'] }}">
+                        
+                        <div class="form-group">
+                            <label for="player_image">Update Player Image</label>
+                            <input type="file" class="form-control" name="player_image" id="player_image" accept="image/*">
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn-custom">Update Image</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var editInfoForm = document.getElementById('edit-info-form');
+    document.addEventListener('DOMContentLoaded', function () {
+        var editInfoForm = document.getElementById('edit-info-form');
 
-            editInfoForm.onsubmit = function (event) {
+        editInfoForm.onsubmit = function (event) {
+            event.preventDefault();
+
+            var formData = new FormData(editInfoForm);
+            var playerId = formData.get('player_info_id');
+            var data = {};
+
+            if (formData.get('player_name')) {
+                data.Player_Name = formData.get('player_name');
+            }
+            if (formData.get('current_password') && formData.get('new_password')) {
+                data.current_password = formData.get('current_password');
+                data.new_password = formData.get('new_password');
+            }
+
+            fetch(`http://127.0.0.1:8000/api/playersinfo/update-credentials/${playerId}`, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Information updated successfully.');
+                    location.reload();
+                } else {
+                    alert(`Failed to update information: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating information:', error);
+                alert('An error occurred while updating information.');
+            });
+
+            $('#editInfoModal').modal('hide');
+        };
+
+        
+
+    });
+</script>
+
+<!-- <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var editImageForm = document.getElementById('edit-image-form');
+
+            editImageForm.onsubmit = function (event) {
                 event.preventDefault();
 
-                var formData = new FormData(editInfoForm);
-                var playerId = formData.get('player_info_id');
-                var data = {};
+                var formData = new FormData(editImageForm);
 
-                if (formData.get('player_name')) {
-                    data.Player_Name = formData.get('player_name');
-                }
-                if (formData.get('current_password') && formData.get('new_password')) {
-                    data.current_password = formData.get('current_password');
-                    data.new_password = formData.get('new_password');
-                }
-
-                fetch(`http://127.0.0.1:8000/api/playersinfo/update-credentials/${playerId}`, {
-                    method: 'PUT',
-                    body: JSON.stringify(data),
+                fetch('http://127.0.0.1:8000/api/playersinfo/update/3', {
+                    method: 'POST',
+                    body: formData,
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Information updated successfully.');
-                        location.reload();
+                        alert('Image updated successfully.');
+                        document.getElementById('playerImage').src = data.image_url;
                     } else {
-                        alert(`Failed to update information: ${data.message}`);
+                        alert(`Failed to update image: ${data.error}`);
                     }
                 })
                 .catch(error => {
-                    console.error('Error updating information:', error);
-                    alert('An error occurred while updating information.');
+                    console.error('Error updating image:', error);
+                    alert('An error occurred while updating image.');
                 });
 
-                $('#editInfoModal').modal('hide');
+                $('#editImageModal').modal('hide');
             };
         });
-
-    </script>
+    </script> -->
 
 </body>
 </html>

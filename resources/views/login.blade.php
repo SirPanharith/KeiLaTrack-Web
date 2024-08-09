@@ -10,43 +10,85 @@
   <style>
     body {
       height: 100vh;
+      background-color: #66bb6a; /* Lighter shade of green */
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .fixed-top-right {
       position: fixed;
       top: 1rem;
       right: 1rem;
     }
+    .bg-custom-green {
+      background-color: #4CAF50;
+    }
+    .input-group {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 0.75rem 1rem;
+      border-radius: 50px;
+      transition: background-color 0.3s ease-in-out;
+    }
+    .input-group input {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      width: 100%;
+    }
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .input-group:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    .login-button {
+      background-color: #388E3C;
+      padding: 0.75rem 1rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+    .login-button:hover {
+      background-color: #2E7D32;
+      transform: translateY(-3px);
+    }
+    .login-button:active {
+      background-color: #1B5E20;
+      transform: translateY(1px);
+    }
+    .login-box {
+      border: 4px solid #ffffff; /* Thicker white border around the login box */
+      padding: 2rem;
+      border-radius: 10px;
+    }
   </style>
 </head>
-<body class="flex items-center justify-center bg-green-700">
-  <div class="w-full max-w-sm mx-auto bg-green-600 rounded-lg p-8">
-    <h1 class="text-white text-3xl font-bold mb-2">Welcome</h1>
-    <p class="text-green-200 text-sm mb-8">Login to your account</p>
+<body>
+  <div class="w-full max-w-sm mx-auto bg-custom-green rounded-lg shadow-lg login-box">
+    <h1 class="text-white text-4xl font-bold mb-2 text-center">KeiLaTrack</h1>
+    <p class="text-white text-sm mb-8 text-center">Login to your account</p>
     <form action="{{ route('login.post') }}" method="POST">
       @csrf <!-- This directive generates the CSRF token input -->
       <div class="mb-4">
-        <label class="block text-green-200 text-sm mb-2" for="email">Email</label>
-        <div class="flex items-center bg-green-300 rounded-full px-4 py-2">
-          <input type="email" id="email" name="Player_Email" class="bg-transparent flex-1 ml-2 outline-none" placeholder="Email" required>
+        <label class="block text-white text-sm mb-2" for="email">Email</label>
+        <div class="input-group">
+          <input type="email" id="email" name="Player_Email" class="flex-1" placeholder="Email" required>
         </div>
       </div>
       <div class="mb-6">
-        <label class="block text-green-200 text-sm mb-2" for="password">Password</label>
-        <div class="flex items-center bg-green-300 rounded-full px-4 py-2">
-          <input type="password" id="password" name="Player_Password" class="bg-transparent flex-1 ml-2 outline-none" placeholder="Password" required>
+        <label class="block text-white text-sm mb-2" for="password">Password</label>
+        <div class="input-group">
+          <input type="password" id="password" name="Player_Password" class="flex-1" placeholder="Password" required>
         </div>
       </div>
       <div class="flex items-center justify-between mb-6">
-        <label class="inline-flex items-center text-green-200 text-sm">
-          <input type="checkbox" class="form-checkbox text-green-500">
-          <span class="ml-2">Remember me</span>
-        </label>
-        <a href="{{ route('forgot_password.show') }}" class="text-sm text-green-200 hover:underline">Forgot Password?</a>
+        <a href="{{ route('forgot_password.show') }}" class="text-sm text-white hover:underline">Forgot Password?</a>
       </div>
-      <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-full transition-colors">Login</button>
+      <button type="submit" class="w-full login-button text-white font-bold">Login</button>
     </form>
-    <p class="text-center text-green-200 text-sm mt-4">
-      Haven't had an Account? <a href="{{ route('register.form') }}" class="text-white text-sm text-green-200 hover:underline">Sign Up</a>
+    <p class="text-center text-white text-sm mt-4">
+      Haven't had an Account? <a href="{{ route('register.form') }}" class="text-white hover:underline">Sign Up</a>
     </p>
   </div>
   @if ($errors->any())

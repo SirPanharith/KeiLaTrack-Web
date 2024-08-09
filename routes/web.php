@@ -30,7 +30,9 @@ Route::middleware(['authplayer'])->group(function () {
     Route::post('/create-note', [SessionGameDetailsController::class, 'createPlayerNote'])->name('createNote');
     Route::get('/api/player-notes/{sessionId}/{playerId}', [PlayerNoteController::class, 'getNoteBySessionAndPlayer']);
     Route::post('/api/update-player-info', [PlayerController::class, 'updatePlayerInfo']);
-    Route::put('/api/playersinfo/{id}', [PlayerController::class, 'updatePlayerInfo']);
+    // Route::post('/playersinfo/update/{id}', [PlayerController::class, 'updatePlayerImage']);
+    Route::post('/api/update-player-image', [PlayerController::class, 'uploadPlayerImage'])->name('player.updateImage');
+
 });
 
 // Default fallback for undefined routes
