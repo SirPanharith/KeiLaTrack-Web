@@ -163,10 +163,10 @@
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
-            padding: 20px;
+            padding: 10px;
             border: 1px solid #888;
-            width: 500px;
-            height: 500px;
+            width: 550px;
+            height: 550px;
             border-radius: 10px;
             border: 4px solid #4CAF50; /* Green border */
         }
@@ -176,14 +176,15 @@
             align-items: center;
             justify-content: space-between;
             flex-direction: column;
-            padding-bottom: 10px;
+            padding-top: 5px; /* Adjust as needed */
+            padding-bottom: 5px; /* Reduced padding */
         }
 
         .modal-header h2, .modal-header h3 {
+            margin: 0; /* Remove any default margin */
+            padding: 0px 0px; /* Adjust the padding to your desired value */
             text-align: center;
-            width: 100%;
             color: #4CAF50; /* Green color for the text */
-            margin: 5px 0; /* Reduce the margin */
         }
 
         .close {
@@ -321,16 +322,36 @@
         .session-details-box .details {
             flex: 1;
         }
+
+        .past-performance-history-box {
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-bottom: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px; /* Adjusted font size for smaller text */
+        }
+
+        .past-performance-history-box i {
+            font-size: 13px; /* Adjusted icon size */
+        }
+
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>Performance Summary</h1>
+    
         </div>
-
+        
         <div class="performance-summary">
             <div class="performance-summary-2">
+                
                 <h3>Match Result</h3>
             </div>
             <h2>{{ $teamName ?? 'N/A' }} {{ $sessionTotalGoals ?? 0 }} - {{ $manualAwayScore ?? 0 }} {{ $manualAwayName ?? 'N/A' }}</h2>
@@ -409,7 +430,8 @@
         <div class="modal-content square-modal">
             <span class="close">&times;</span>
             <div class="modal-header">
-                <h2>Player Name Performance Summary</h2>
+    </br>
+                <h2>Performance Summary of {{ $playerName }} </h2></br>
                 <h3>Match Result</h3>
                 <h2>{{ $teamName ?? 'N/A' }} {{ $sessionTotalGoals ?? 0 }} - {{ $manualAwayScore ?? 0 }} {{ $manualAwayName ?? 'N/A' }}</h2>
             </div>
@@ -425,14 +447,39 @@
                             </div>
                         </div>
                         <div class="past-performance note-box">
-                            <div class="note-container">
-                                <span><strong><i class="fas fa-sticky-note"></i> Previous Player History:</strong></span>
-                            </div>
+                        <div class="note-container">
+                            <span><strong style="color: #4CAF50;"><i class="fas fa-sticky-note"></i> Previous Player History:</strong></span>
+                        </div> </br>
+                        <div class="past-performance-history-box">
+                            <span><strong><i class="fas fa-calendar-alt"></i> 03.01.24</strong></span>
+                            <span><img src="https://cdn-icons-png.flaticon.com/128/7458/7458881.png" alt="Goal Icon" crossorigin="anonymous" width="20" height="20"> {{ $goals ?? 0 }}</span>
+                            <span><img src="https://cdn-icons-png.flaticon.com/256/893/893831.png" alt="Assist Icon" crossorigin="anonymous" width="20" height="20"> {{ $assists ?? 0 }}</span>
+                            <span><i class="fas fa-stopwatch-20" fa-3x></i> {{ $timePlayed ?? '00:00' }}</span>
+                        </div>
+
+                        <div class="past-performance-history-box">
+                            <span><strong><i class="fas fa-calendar-alt"></i> 02.01.24</strong></span>
+                            <span><img src="https://cdn-icons-png.flaticon.com/128/7458/7458881.png" alt="Goal Icon" crossorigin="anonymous" width="20" height="20"> {{ $goals ?? 0 }}</span>
+                            <span><img src="https://cdn-icons-png.flaticon.com/256/893/893831.png" alt="Assist Icon" crossorigin="anonymous" width="20" height="20"> {{ $assists ?? 0 }}</span>
+                            <span><i class="fas fa-stopwatch-20"></i> {{ $timePlayed ?? '00:00' }}</span>
+                        </div>
+
+                        <div class="past-performance-history-box">
+                            <span><strong><i class="fas fa-calendar-alt"></i> 01.01.24</strong></span>
+                            <span><img src="https://cdn-icons-png.flaticon.com/128/7458/7458881.png" alt="Goal Icon" crossorigin="anonymous" width="20" height="20"> {{ $goals ?? 0 }}</span>
+                            <span><img src="https://cdn-icons-png.flaticon.com/256/893/893831.png" alt="Assist Icon" crossorigin="anonymous" width="20" height="20"> {{ $assists ?? 0 }}</span>
+                            <span><i class="fas fa-stopwatch-20"></i> {{ $timePlayed ?? '00:00' }}</span>
+                        </div>
+
+
+
                         </div>
                     </div>
                     <div class="right-column">
                         <div class="position-stats">
+    </br>
                             <h3>Player Performance</h3>
+    </br>
                             <table style="width: 100%; margin-bottom: 15px;">
                                 <tr>
                                     <td><strong>Primary Position:</strong></td>
@@ -460,6 +507,7 @@
                     </div>
                 </div>
             </div>
+    </br></br>
             <button id="download" class="btn-custom">Download</button>
         </div>
     </div>
