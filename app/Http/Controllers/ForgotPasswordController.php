@@ -21,7 +21,7 @@ class ForgotPasswordController extends Controller
     $request->validate(['email' => 'required|email']);
 
     // Send the OTP to the email
-    $response = Http::post('http://127.0.0.1:8000/api/password/forgot', [
+    $response = Http::post('http://143.198.209.104/api/password/forgot', [
         'email' => $request->email,
     ]);
 
@@ -57,7 +57,7 @@ public function showOtpForm()
         $email = Session::get('email');
 
         // Verify OTP
-        $response = Http::post('http://127.0.0.1:8000/api/password/reset', [
+        $response = Http::post('http://143.198.209.104/api/password/reset', [
             'email' => $email,
             'otp' => $request->input('otp'),
         ]);
@@ -92,7 +92,7 @@ public function showOtpForm()
         ];
 
         // Send a POST request to the API endpoint
-        $response = Http::post('http://127.0.0.1:8000/api/password/reset', $payload);
+        $response = Http::post('http://143.198.209.104/api/password/reset', $payload);
 
         if ($response->successful()) {
             // Clear the session after successful password reset

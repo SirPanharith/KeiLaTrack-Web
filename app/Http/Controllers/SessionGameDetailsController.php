@@ -10,7 +10,7 @@ class SessionGameDetailsController extends Controller
     public function getSessionGame($sessionId, $playerId)
     {
         // Make a GET request to the API endpoint
-        $response = Http::get("http://127.0.0.1:8000/api/session-games/{$sessionId}/player/{$playerId}");
+        $response = Http::get("http://143.198.209.104/api/session-games/{$sessionId}/player/{$playerId}");
 
         // Check if request was successful
         if ($response->successful()) {
@@ -37,7 +37,7 @@ class SessionGameDetailsController extends Controller
             $totalDuration = $sessionGame['Total_Duration'];
 
             // Fetch the player note
-            $noteResponse = Http::get("http://127.0.0.1:8000/api/player-notes/{$sessionId}/{$playerId}");
+            $noteResponse = Http::get("http://143.198.209.104/api/player-notes/{$sessionId}/{$playerId}");
             $playerNote = $noteResponse->successful() ? $noteResponse->json()['PlayerNote'] : '(Add your note)';
 
             // Return the view with individual elements
@@ -62,7 +62,7 @@ class SessionGameDetailsController extends Controller
         $playerNote = $request->input('player_note');
 
         // Fetch the existing player note to get its ID
-        $noteResponse = Http::get("http://127.0.0.1:8000/api/player-notes/{$sessionId}/{$playerId}");
+        $noteResponse = Http::get("http://143.198.209.104/api/player-notes/{$sessionId}/{$playerId}");
 
         if ($noteResponse->successful()) {
             $noteData = $noteResponse->json();
@@ -70,7 +70,7 @@ class SessionGameDetailsController extends Controller
                 $noteId = $noteData['PlayerNote_ID'];
 
                 // Update the existing player note
-                $response = Http::put("http://127.0.0.1:8000/api/player-notes/{$noteId}", [
+                $response = Http::put("http://143.198.209.104/api/player-notes/{$noteId}", [
                     'Session_ID' => $sessionId,
                     'Player_ID' => $playerId,
                     'PlayerNote' => $playerNote,
@@ -85,7 +85,7 @@ class SessionGameDetailsController extends Controller
         }
 
         // Handle the case where the note does not exist yet
-        $response = Http::post('http://127.0.0.1:8000/api/player-notes', [
+        $response = Http::post('http://143.198.209.104/api/player-notes', [
             'Session_ID' => $sessionId,
             'Player_ID' => $playerId,
             'PlayerNote' => $playerNote,
@@ -106,7 +106,7 @@ class SessionGameDetailsController extends Controller
         $playerNote = $request->input('player_note');
 
         // Create the player note
-        $response = Http::post('http://127.0.0.1:8000/api/player-notes', [
+        $response = Http::post('http://143.198.209.104/api/player-notes', [
             'Session_ID' => $sessionId,
             'Player_ID' => $playerId,
             'PlayerNote' => $playerNote,

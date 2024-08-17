@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
     private function getPlayerInformation()
     {
         $playerInfoId = session('PlayerInfo_ID');
-        $response = Http::get('http://127.0.0.1:8000/api/players/' . $playerInfoId);
+        $response = Http::get('http://143.198.209.104/api/players/' . $playerInfoId);
         if ($response->successful()) {
             return $response->json();
         } else {

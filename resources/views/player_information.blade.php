@@ -314,7 +314,7 @@
                 data.new_password = formData.get('new_password');
             }
 
-            fetch(`http://127.0.0.1:8000/api/playersinfo/update-credentials/${playerId}`, {
+            fetch(`http://143.198.209.104/api/playersinfo/update-credentials/${playerId}`, {
                 method: 'PUT',
                 body: JSON.stringify(data),
                 headers: {

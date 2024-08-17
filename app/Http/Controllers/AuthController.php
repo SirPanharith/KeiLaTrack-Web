@@ -80,7 +80,7 @@ class AuthController extends Controller
         ]);
 
         // Make a POST request to the registration endpoint
-        $response = Http::post('http://127.0.0.1:8000/api/playersinfo/register', [
+        $response = Http::post('http://143.198.209.104/api/playersinfo/register', [
             'Player_Name' => $request->input('Player_Name'),
             'Player_Email' => $request->input('Player_Email'),
             'Player_Password' => $request->input('Player_Password'),

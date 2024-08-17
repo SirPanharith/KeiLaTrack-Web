@@ -16,7 +16,7 @@ class PlayerController extends Controller
         $playerInfoId = session('playerInfoId');
 
         // Make a GET request to the API endpoint
-        $response = Http::get('http://127.0.0.1:8000/api/playersinfo/' . $playerInfoId);
+        $response = Http::get('http://143.198.209.104/api/playersinfo/' . $playerInfoId);
 
         // Check if the request was successful
         if ($response->successful()) {
@@ -39,7 +39,7 @@ class PlayerController extends Controller
         $playerEmail = $request->input('player_email');
         $playerPassword = $request->input('player_password');
 
-        $response = Http::put('http://127.0.0.1:8000/api/playersinfo/' . $playerInfoId, [
+        $response = Http::put('http://143.198.209.104/api/playersinfo/' . $playerInfoId, [
             'PlayerInfo_ID' => $playerInfoId,
             'Player_Name' => $playerName,
             'Player_Email' => $playerEmail,
@@ -68,7 +68,7 @@ class PlayerController extends Controller
         \Log::info('PlayerInfoId from session: ', ['playerInfoId' => $playerInfoId]);
 
         // Fetch data from the API endpoint
-        $response = Http::get("http://127.0.0.1:8000/api/session-info-by-playerinfo/{$playerInfoId}");
+        $response = Http::get("http://143.198.209.104/api/session-info-by-playerinfo/{$playerInfoId}");
 
         if ($response->successful()) {
             $data = $response->json();
@@ -128,7 +128,7 @@ class PlayerController extends Controller
         'PlayerInfo_Image',
         file_get_contents($request->file('player_image')->getPathname()),
         $request->file('player_image')->getClientOriginalName()
-    )->post('http://127.0.0.1:8000/api/playersinfo/update/3');
+    )->post('http://143.198.209.104/api/playersinfo/update/3');
 
     // Check if the upload was successful
     if ($response->successful()) {
