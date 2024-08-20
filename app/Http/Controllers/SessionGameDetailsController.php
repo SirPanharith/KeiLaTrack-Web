@@ -35,6 +35,18 @@ class SessionGameDetailsController extends Controller
             $teamName = $sessionGame['Team_Name'];
             $sessionLocation = $sessionGame['Session_Location'];
             $totalDuration = $sessionGame['Total_Duration'];
+            $onePriorSessionDate = $sessionGame['1_Prior_Session']['Session_Date'];
+            $twoPriorSessionDate = $sessionGame['2_Prior_Session']['Session_Date'];
+            $threePriorSessionDate = $sessionGame['3_Prior_Session']['Session_Date'];
+            $onePriorGoals = $sessionGame['1_Prior_Session']['Total_Goals'];
+            $twoPriorGoals = $sessionGame['2_Prior_Session']['Total_Goals'];
+            $threePriorGoals = $sessionGame['3_Prior_Session']['Total_Goals'];
+            $onePriorAssists = $sessionGame['1_Prior_Session']['Total_Assists'];
+            $twoPriorAssists = $sessionGame['2_Prior_Session']['Total_Assists'];
+            $threePriorAssists = $sessionGame['3_Prior_Session']['Total_Assists'];
+            $onePriorDuration = $sessionGame['1_Prior_Session']['Total_Duration'];
+            $twoPriorDuration = $sessionGame['2_Prior_Session']['Total_Duration'];
+            $threePriorDuration = $sessionGame['3_Prior_Session']['Total_Duration'];
 
             // Fetch the player note
             $noteResponse = Http::get("http://143.198.209.104/api/player-notes/{$sessionId}/{$playerId}");
@@ -44,7 +56,9 @@ class SessionGameDetailsController extends Controller
             return view('sessionhistory', compact(
                 'sessionId', 'sessionDate', 'sessionTime', 'sideId', 'totalPlayerPerSide', 'playerId', 'playerName',
                 'primaryPosition', 'secondaryPosition', 'totalGoals', 'totalAssists', 'sessionTotalGoals',
-                'manualAwayName', 'manualAwayScore', 'teamName', 'sessionLocation', 'totalDuration', 'playerNote'
+                'manualAwayName', 'manualAwayScore', 'teamName', 'sessionLocation', 'totalDuration', 'playerNote', 'onePriorSessionDate', 'twoPriorSessionDate',
+                'threePriorSessionDate', 'onePriorGoals', 'twoPriorGoals', 'threePriorGoals', 'onePriorAssists',
+                'twoPriorAssists', 'threePriorAssists', 'onePriorDuration', 'twoPriorDuration', 'threePriorDuration',
             ));
         } else {
             // Log the error response for debugging
