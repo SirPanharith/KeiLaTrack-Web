@@ -191,18 +191,21 @@
             <h2>Teams and Positions</h2>
             <table class="info-table">
                 <tr>
+                    <th>#</th>
                     <th>Team</th>
                     <th>Primary Position</th>
                     <th>Secondary Position</th>
                 </tr>
-                @foreach ($player['players'] as $playerDetail)
+                @foreach ($player['players'] as $index => $playerDetail)
                 <tr>
+                    <td>{{ $index + 1 }}</td> <!-- This adds the row number -->
                     <td>{{ $playerDetail['Team'] }}</td>
                     <td>{{ $playerDetail['PrimaryPosition'] }}</td>
                     <td>{{ $playerDetail['SecondaryPosition'] }}</td>
                 </tr>
                 @endforeach
             </table>
+
 
             <div class="button-group">
                 <button id="edit-info-btn" class="btn-custom" data-toggle="modal" data-target="#editInfoModal">
@@ -254,8 +257,14 @@
                         </div>
                         
                         <div class="text-center">
-                            <button type="submit" class="btn-custom">Update Information</button>
-                        </div>
+    <button type="submit" class="btn-custom">Update Information</button>
+</div>
+
+<!-- Logout Form -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
                     </form>
                 </div>
 
@@ -297,51 +306,51 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var editInfoForm = document.getElementById('edit-info-form');
+    var editInfoForm = document.getElementById('edit-info-form');
 
-        editInfoForm.onsubmit = function (event) {
-            event.preventDefault();
+    editInfoForm.onsubmit = function (event) {
+        event.preventDefault();
 
-            var formData = new FormData(editInfoForm);
-            var playerId = formData.get('player_info_id');
-            var data = {};
+        var formData = new FormData(editInfoForm);
+        var playerId = formData.get('player_info_id');
+        var data = {};
 
-            if (formData.get('player_name')) {
-                data.Player_Name = formData.get('player_name');
+        if (formData.get('player_name')) {
+            data.Player_Name = formData.get('player_name');
+        }
+        if (formData.get('current_password') && formData.get('new_password')) {
+            data.current_password = formData.get('current_password');
+            data.new_password = formData.get('new_password');
+        }
+
+        fetch(`http://143.198.209.104/api/playersinfo/update-credentials/${playerId}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
             }
-            if (formData.get('current_password') && formData.get('new_password')) {
-                data.current_password = formData.get('current_password');
-                data.new_password = formData.get('new_password');
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Information updated successfully.');
+                
+                // Automatically log out the session after updating the information
+                document.getElementById('logout-form').submit();
+            } else {
+                alert(`Failed to update information: ${data.message}`);
             }
+        })
+        .catch(error => {
+            console.error('Error updating information:', error);
+            alert('An error occurred while updating information.');
+        });
 
-            fetch(`http://143.198.209.104/api/playersinfo/update-credentials/${playerId}`, {
-                method: 'PUT',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Information updated successfully.');
-                    location.reload();
-                } else {
-                    alert(`Failed to update information: ${data.message}`);
-                }
-            })
-            .catch(error => {
-                console.error('Error updating information:', error);
-                alert('An error occurred while updating information.');
-            });
+        $('#editInfoModal').modal('hide');
+    };
+});
 
-            $('#editInfoModal').modal('hide');
-        };
-
-        
-
-    });
 </script>
 
 <!-- <script>

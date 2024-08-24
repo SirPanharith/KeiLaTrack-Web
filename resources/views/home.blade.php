@@ -121,18 +121,28 @@
                         });
                     ?>
                     <div class="team-summary">
-                        <h3><i class="fas fa-users"></i> Team: {{ $team['Team_Name'] }}</h3>
-                        <ul>
-                            @foreach ($team['Sessions'] as $session)
-                                <li>
-                                    <a href="{{ route('sessionhistory', ['sessionId' => $session['Session_ID'], 'playerId' => $team['Player_ID']]) }}">
-                                       <i class="fas fa-calendar-alt"></i> {{ $session['Session_Date'] }} &nbsp;
-                                       <i class="fas fa-clock"></i> {{ $session['Session_Time'] }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+    <h3><i class="fas fa-users"></i> Team: {{ $team['Team_Name'] }}</h3>
+    <!-- Display total stats -->
+    <p style="color: black;"> &nbsp; &nbsp; &nbsp; &nbsp;
+    <strong>Total Games:</strong> 1 &nbsp;
+    <strong>Wins:</strong> 2 &nbsp;
+    <strong>Losses:</strong> 3 &nbsp;
+    <strong>Draws:</strong> 4
+</p>
+
+    <ul>
+        @foreach ($team['Sessions'] as $session)
+            <li>
+                <a href="{{ route('sessionhistory', ['sessionId' => $session['Session_ID'], 'playerId' => $team['Player_ID']]) }}">
+                   <i class="fas fa-calendar-alt"></i> {{ $session['Session_Date'] }} &nbsp; &nbsp;
+                   <i class="fas fa-clock"></i> {{ $session['Session_Time'] }} &nbsp; &nbsp;
+                   <i class="fas fa-clipboard"></i> {{ $team['Team_Name'] }} 0 - 2 Away Name
+                </a>
+            </li>
+        @endforeach
+    </ul>
+</div>
+
                 @endif
             @endforeach
         </div>

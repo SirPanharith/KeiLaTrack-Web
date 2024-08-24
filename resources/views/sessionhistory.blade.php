@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Session History</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
     <style>
@@ -353,7 +354,10 @@
         font-size: 13px;
         /* Adjusted icon size */
     }
+
+    
     </style>
+    
 </head>
 
 <body>
@@ -471,8 +475,10 @@
     </div>
 
     <!-- Popup Modal -->
-    <div id="summaryModal" class="modal">
-        <div class="modal-content square-modal" style="width: 80%; height: 80vh; max-width: 600px; max-height: 600px; border-radius: 0px">
+    <div class="scaled-container">
+    <div id="summaryModal" class="modal" >
+        <div class="modal-content square-modal"
+            style="width: 80%; height: 80vh; max-width: 600px; max-height: 600px; border-radius: 0px">
 
 
             <span class="close">&times;</span>
@@ -484,7 +490,7 @@
                 </h2>
 
                 <div
-                    style="border: 4px solid #4CAF50; padding: 9px 15px; border-radius: 0px; background-color: #f9f9f9; text-align: center; margin-top: 9px; min-width: 565px">
+                    style=" border: 4px solid #4CAF50; padding: 9px 15px; border-radius: 0px; background-color: #f9f9f9; text-align: center; margin-top: 9px; min-width: 565px">
                     <h3 style="margin: 0;">Match Result</h3>
                     <table
                         style="width: 80%; margin: 0 auto; border: 2px solid #4CAF50; border-collapse: collapse; text-align: center; margin-top: 7px;border-radius: 8px;">
@@ -568,49 +574,60 @@
                                 </div>
                                 <!-- Removed <br> tag -->
                                 <table class="table table-bordered text-center"
-    style="border: 4px solid #4CAF50; border-collapse: collapse; margin: 2px; margin-left: 0px; margin-right: 0px; auto 0;">
-    <thead style="background-color: #f9f9f9;">
-        <tr>
-            <th style="border: 2px solid #4CAF50; height: 30px;"><i class="fas fa-calendar-alt"></i>
-            </th>
-            <th style="border: 2px solid #4CAF50; height: 30px;"><img
-                    src="https://cdn-icons-png.flaticon.com/128/7458/7458881.png" alt="Goal Icon" crossorigin="anonymous"
-                    width="20" height="20"></th>
-            <th style="border: 2px solid #4CAF50; height: 30px;"><img
-                    src="https://cdn-icons-png.flaticon.com/256/893/893831.png" alt="Assist Icon" crossorigin="anonymous"
-                    width="20" height="20">
-            </th>
-            <th style="border: 2px solid #4CAF50; height: 30px;"><i class="fas fa-stopwatch-20"></i>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr style="text-align: center; vertical-align: middle;">
-            <td style="border: 2px solid #4CAF50; height: 30px;">
-                <strong>{{ $onePriorSessionDate }}</strong>
-            </td>
-            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $onePriorGoals }}</td>
-            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $onePriorAssists }}</td>
-            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $onePriorDuration }}</td>
-        </tr>
-        <tr style="text-align: center; vertical-align: middle;">
-            <td style="border: 2px solid #4CAF50; height: 30px;">
-                <strong>{{ $twoPriorSessionDate }}</strong>
-            </td>
-            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $twoPriorGoals }}</td>
-            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $twoPriorAssists }}</td>
-            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $twoPriorDuration }}</td>
-        </tr>
-        <tr style="text-align: center; vertical-align: middle;">
-            <td style="border: 2px solid #4CAF50; height: 30px;">
-                <strong>{{ $threePriorSessionDate }}</strong>
-            </td>
-            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $threePriorGoals }}</td>
-            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $threePriorAssists }}</td>
-            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $threePriorDuration }}</td>
-        </tr>
-    </tbody>
-</table>
+                                    style="border: 4px solid #4CAF50; border-collapse: collapse; margin: 2px; margin-left: 0px; margin-right: 0px; auto 0;">
+                                    <thead style="background-color: #f9f9f9;">
+                                        <tr>
+                                            <th style="border: 2px solid #4CAF50; height: 30px;"><i
+                                                    class="fas fa-calendar-alt"></i>
+                                            </th>
+                                            <th style="border: 2px solid #4CAF50; height: 30px;"><img
+                                                    src="https://cdn-icons-png.flaticon.com/128/7458/7458881.png"
+                                                    alt="Goal Icon" crossorigin="anonymous" width="20" height="20"></th>
+                                            <th style="border: 2px solid #4CAF50; height: 30px;"><img
+                                                    src="https://cdn-icons-png.flaticon.com/256/893/893831.png"
+                                                    alt="Assist Icon" crossorigin="anonymous" width="20" height="20">
+                                            </th>
+                                            <th style="border: 2px solid #4CAF50; height: 30px;"><i
+                                                    class="fas fa-stopwatch-20"></i>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="text-align: center; vertical-align: middle;">
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">
+                                                <strong>{{ $onePriorSessionDate }}</strong>
+                                            </td>
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $onePriorGoals }}
+                                            </td>
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $onePriorAssists }}
+                                            </td>
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $onePriorDuration }}
+                                            </td>
+                                        </tr>
+                                        <tr style="text-align: center; vertical-align: middle;">
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">
+                                                <strong>{{ $twoPriorSessionDate }}</strong>
+                                            </td>
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $twoPriorGoals }}
+                                            </td>
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $twoPriorAssists }}
+                                            </td>
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $twoPriorDuration }}
+                                            </td>
+                                        </tr>
+                                        <tr style="text-align: center; vertical-align: middle;">
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">
+                                                <strong>{{ $threePriorSessionDate }}</strong>
+                                            </td>
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">{{ $threePriorGoals }}
+                                            </td>
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">
+                                                {{ $threePriorAssists }}</td>
+                                            <td style="border: 2px solid #4CAF50; height: 30px;">
+                                                {{ $threePriorDuration }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
                             </div>
 
@@ -623,7 +640,7 @@
                     </div>
                     <div class="right-column">
                         <div class="position-stats"
-                        style="border: 4px solid #4CAF50; padding: 10px; border-radius: 0px; margin-left: -9px;  ">
+                            style="border: 4px solid #4CAF50; padding: 10px; border-radius: 0px; margin-left: -9px;  ">
                             <h3 style="color: #4CAF50; font-size: 24px; font-weight: bold;">Player Performance</h3>
 
 
@@ -672,9 +689,10 @@
                     </div>
                 </div>
             </div>
-            
+
             <button id="download" class="btn-custom">Download</button>
         </div>
+    </div>
     </div>
 
     <script>
