@@ -56,46 +56,50 @@ class PlayerController extends Controller
     
 
     public function showPlayerSessions()
-    {
-        $playerInfoId = session('playerInfoId');
+{
+    // Retrieve the playerInfoId from session
+    $playerInfoId = session('playerInfoId');
 
-        // Check if PlayerInfoId is retrieved correctly from session
-        if (!$playerInfoId) {
-            \Log::error('PlayerInfoId not found in session');
-            return redirect()->route('login.show')->withErrors(['message' => 'Session expired or invalid. Please log in again.']);
-        }
+    // Check if playerInfoId is retrieved correctly from the session
+    if (!$playerInfoId) {
+        \Log::error('PlayerInfoId not found in session');
+        return redirect()->route('login.show')->withErrors(['message' => 'Session expired or invalid. Please log in again.']);
+    }
 
-        \Log::info('PlayerInfoId from session: ', ['playerInfoId' => $playerInfoId]);
+    \Log::info('PlayerInfoId retrieved from session', ['playerInfoId' => $playerInfoId]);
 
-        // Fetch data from the API endpoint
+    try {
+        // Make the API request
         $response = Http::get("http://143.198.209.104/api/session-info-by-playerinfo/{$playerInfoId}");
 
         if ($response->successful()) {
             $data = $response->json();
 
-            // Log data for debugging
-            \Log::info('API Response Data: ', $data);
+            // Log the response data for debugging
+            \Log::info('API Response Data:', $data);
 
-            // dd($data);
-
-            // Ensure the data format is correct and contains expected keys
-            if (isset($data['PlayerInfo_ID'], $data['Player_Name'], $data['Data'])) {
-                // Return the view with the fetched data
+            // Validate the response structure
+            if (isset($data['PlayerInfo_ID'], $data['Player_Name'], $data['Data']) && is_array($data['Data'])) {
+                // Pass the data to the view
                 return view('home', [
                     'playerInfoId' => $data['PlayerInfo_ID'],
                     'playerName' => $data['Player_Name'],
                     'playerData' => $data['Data'],
                 ]);
-            } 
-
+            } else {
+                \Log::warning('Unexpected API response structure', $data);
+                return redirect()->back()->withErrors(['message' => 'Unexpected response from the server. Please try again later.']);
+            }
+        } else {
+            \Log::error('Failed to fetch data from the API', ['status' => $response->status()]);
+            return redirect()->back()->withErrors(['message' => 'Unable to retrieve session data. Please try again later.']);
         }
-
-        dd($response->json());
-
-        // Handle the case where the API request fails
-        \Log::error('Failed to fetch data from the API', ['status' => $response->status()]);
-        return response()->json(['error' => 'Failed to fetch data from the API'], 500);
+    } catch (\Exception $e) {
+        \Log::error('Error occurred while fetching data from the API', ['error' => $e->getMessage()]);
+        return redirect()->back()->withErrors(['message' => 'An unexpected error occurred. Please try again later.']);
     }
+}
+
 
 
     public function show()

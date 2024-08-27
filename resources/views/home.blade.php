@@ -121,13 +121,44 @@
                         });
                     ?>
                     <div class="team-summary">
-    <h3><i class="fas fa-users"></i> Team: {{ $team['Team_Name'] }}</h3>
-    <!-- Display total stats -->
-    <p style="color: black;"> &nbsp; &nbsp; &nbsp; &nbsp;
-    <strong>Total Games:</strong> 1 &nbsp;
-    <strong>Wins:</strong> 2 &nbsp;
-    <strong>Losses:</strong> 3 &nbsp;
-    <strong>Draws:</strong> 4
+                    <h3 style="color: #4CAF50;"><i class="fas fa-users"></i> Team: {{ $team['Team_Name'] }} </h3>
+
+    <h3 style="color: black; font-size: 16px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total Games: {{ $team['Total_Games'] }} (Wins: {{ $team['Total_Wins'] }}, Losses: {{ $team['Total_Loses'] }}, Draws: {{ $team['Total_Draws'] }})</h3>
+
+   
+    
+
+<table style="border: 2px solid #4CAF50; border-collapse: collapse; width: 100%; margin-top: 15px; text-align: center;">
+    <tr>
+    <td style="border-right: 2px solid white; border-top: 2px solid #4CAF50; border-bottom: 2px solid #4CAF50; padding: 8px; background-color: #4CAF50; color: white;"><strong>Total Goals for Team</strong></td>
+    <td style="border-left: 2px solid white; border-right: 2px solid white; border-top: 2px solid #4CAF50; border-bottom: 2px solid #4CAF50; padding: 8px; background-color: #4CAF50; color: white;">
+    <strong>Total Assists for Team</strong>
+</td>
+
+<td style="border: 2px solid #4CAF50; padding: 8px; background-color: #4CAF50; color: white;"><strong>Total Timeplayed for Team</strong></td>
+
+
+    </tr>
+    <tr>
+        <td style="border: 2px solid #4CAF50; padding: 8px;">{{ $team['Total_Goals_For_Team'] }}</td>
+        <td style="border: 2px solid #4CAF50; padding: 8px;">{{ $team['Total_Assists_For_Team'] }}</td>
+        <td style="border: 2px solid #4CAF50; padding: 8px;">{{ $team['Total_TimePlayed_For_Team'] }}</td>
+    </tr>
+</table>
+
+<table style="border: 2px solid #4CAF50; border-collapse: collapse; width: 100%; margin-top: 15px; text-align: center;">
+    <tr>
+        <td style=" border-right: 2px solid white; border-top: 2px solid #4CAF50; border-bottom: 2px solid #4CAF50; padding: 8px; background-color: #4CAF50; color: white;"><strong>Primary Position</strong> </td>
+        <td style="border-left: 2px solid white; border-top: 2px solid #4CAF50; border-bottom: 2px solid #4CAF50; padding: 8px; background-color: #4CAF50; color: white;"><strong>Secondary Position</strong> </td>
+    </tr>
+    <tr>
+        <td style="border: 2px solid #4CAF50; padding: 8px;">{{ $team['PrimaryPosition'] }}</td>
+        <td style="border: 2px solid #4CAF50; padding: 8px;">{{ $team['SecondaryPosition'] }}</td>
+    </tr>
+</table>
+
+
+
 </p>
 
     <ul>
@@ -136,7 +167,7 @@
                 <a href="{{ route('sessionhistory', ['sessionId' => $session['Session_ID'], 'playerId' => $team['Player_ID']]) }}">
                    <i class="fas fa-calendar-alt"></i> {{ $session['Session_Date'] }} &nbsp; &nbsp;
                    <i class="fas fa-clock"></i> {{ $session['Session_Time'] }} &nbsp; &nbsp;
-                   <i class="fas fa-clipboard"></i> {{ $team['Team_Name'] }} 0 - 2 Away Name
+                   <i class="fas fa-clipboard"></i> {{ $team['Team_Name'] }} {{ $session['Session_Total_Goals'] }} - {{ $session['ManualAway_Score'] }} {{ $session['ManualAway_Name'] }}
                 </a>
             </li>
         @endforeach
