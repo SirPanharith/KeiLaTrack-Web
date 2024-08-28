@@ -128,11 +128,7 @@ class PlayerController extends Controller
     // $player->PlayerInfo_Image = $path;
     // $player->save();
 
-    $response = Http::attach(
-        'PlayerInfo_Image',
-        file_get_contents($request->file('player_image')->getPathname()),
-        $request->file('player_image')->getClientOriginalName()
-    )->post('http://143.198.209.104/api/playersinfo/update/3');
+
 
     // Check if the upload was successful
     if ($response->successful()) {
