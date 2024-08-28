@@ -247,11 +247,11 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="current_password">Enter Your Password</label>
+                            <label for="current_password">Enter Your Current Password</label>
                             <input type="password" class="form-control" name="current_password">
                         </div>
                         
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="new_password">Enter A New Password</label>
                             <input type="password" class="form-control" name="new_password" id="new_password">
                         </div>
@@ -263,7 +263,41 @@
                         
                         <div class="text-center">
                             <button type="submit" class="btn-custom">Update Information</button>
-                        </div>
+                        </div> -->
+                        <div class="form-group">
+    <label for="new_password">Enter A New Password</label>
+    <input type="password" class="form-control" name="new_password" id="new_password">
+</div>
+
+<div class="form-group">
+    <label for="new_password_confirmation">Re-Enter A New Password</label>
+    <input type="password" class="form-control" name="new_password_confirmation" id="new_password_confirmation">
+</div>
+
+<div class="text-center">
+    <button type="submit" class="btn-custom">Update Information</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var editInfoForm = document.getElementById('edit-info-form');
+
+        editInfoForm.onsubmit = function (event) {
+            var newPassword = document.getElementById('new_password').value;
+            var confirmPassword = document.getElementById('new_password_confirmation').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('The passwords do not match. Please try again.');
+                event.preventDefault(); // Prevent form submission
+                return false; // Ensure the form does not submit
+            }
+
+            // If passwords match, proceed with the form submission
+            return true;
+        };
+    });
+</script>
+
                     </form>
                 </div>
             </div>
