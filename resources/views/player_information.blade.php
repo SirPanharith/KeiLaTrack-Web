@@ -3,6 +3,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,163 +11,171 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
-        /* Your existing CSS styles */
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f9;
-        }
+    /* Your existing CSS styles */
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f4f4f9;
+    }
 
-        .navbar {
-            background-color: #4CAF50;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-        }
+    .navbar {
+        background-color: #4CAF50;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+    }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+    }
 
-        .profile-picture {
-            position: relative;
-            width: 50px; /* same size as original */
-            height: 50px; /* same size as original */
-            border-radius: 50%;
-            overflow: hidden;
-            display: inline-block;
-        }
+    .profile-picture {
+        position: relative;
+        width: 50px;
+        /* same size as original */
+        height: 50px;
+        /* same size as original */
+        border-radius: 50%;
+        overflow: hidden;
+        display: inline-block;
+    }
 
-        .profile-picture img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-        }
+    .profile-picture img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
 
-        .profile-picture-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
+    .profile-picture-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
-        .profile-picture-container img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-        }
+    .profile-picture-container img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
 
-        .edit-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: white;
-            border-radius: 50%;
-            padding: 5px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            color: #4CAF50;
-        }
+    .edit-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: white;
+        border-radius: 50%;
+        padding: 5px;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        color: #4CAF50;
+    }
 
-        .container {
-            background-color: #ffffff;
-            color: #333;
-            padding: 30px;
-            max-width: 700px;
-            margin: 30px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+    .container {
+        background-color: #ffffff;
+        color: #333;
+        padding: 30px;
+        max-width: 700px;
+        margin: 30px auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-        .player-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .player-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .info-table {
-            margin: auto;
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+    .info-table {
+        margin: auto;
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
 
-        .info-table th, .info-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
+    .info-table th,
+    .info-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
 
-        .info-table th {
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-        }
+    .info-table th {
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+    }
 
-        .info-table td {
-            background-color: #fff;
-            color: #333;
-            text-align: center;
-        }
+    .info-table td {
+        background-color: #fff;
+        color: #333;
+        text-align: center;
+    }
 
-        h1, h2 {
-            margin-bottom: 20px;
-        }
+    h1,
+    h2 {
+        margin-bottom: 20px;
+    }
 
-        .btn-custom {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 15px 30px;
-            font-size: 16px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
+    .btn-custom {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        padding: 15px 30px;
+        font-size: 16px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
 
-        .btn-custom:hover {
-            background-color: #45a049;
-            transform: translateY(-2px);
-        }
+    .btn-custom:hover {
+        background-color: #45a049;
+        transform: translateY(-2px);
+    }
 
-        .modal-header {
-            justify-content: center;
-            border-bottom: none;
-        }
+    .modal-header {
+        justify-content: center;
+        border-bottom: none;
+    }
 
-        .button-group {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
+    .button-group {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+    }
 
-        .button-group .btn-custom {
-            margin: 0 10px;
-            min-width: 200px; /* Make the buttons the same size */
-            height: 55px; /* Adjust height as needed */
-        }
+    .button-group .btn-custom {
+        margin: 0 10px;
+        min-width: 200px;
+        /* Make the buttons the same size */
+        height: 55px;
+        /* Adjust height as needed */
+    }
 
-        .info-table .info-label {
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-        }
+    .info-table .info-label {
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+    }
 
-        .container-bg {
-            background-color: #f7f7f9;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        }
+    .container-bg {
+        background-color: #f7f7f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
     </style>
 </head>
+
 <body>
     <div class="container container-bg">
         <div class="player-info">
@@ -222,7 +231,8 @@
     </div>
 
     <!-- Edit Player Information Modal -->
-    <div class="modal fade" id="editInfoModal" tabindex="-1" role="dialog" aria-labelledby="editInfoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editInfoModal" tabindex="-1" role="dialog" aria-labelledby="editInfoModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -234,23 +244,26 @@
                 <div class="modal-body">
                     <form id="edit-info-form" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="player_info_id" value="{{ $player['player_info']['PlayerInfo_ID'] }}">
-                        
+                        <input type="hidden" name="player_info_id"
+                            value="{{ $player['player_info']['PlayerInfo_ID'] }}">
+
                         <div class="form-group">
                             <label for="player_email">Email Address</label>
-                            <input type="email" class="form-control" name="player_email" value="{{ $player['player_info']['Player_Email'] }}" readonly>
+                            <input type="email" class="form-control" name="player_email"
+                                value="{{ $player['player_info']['Player_Email'] }}" readonly>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="player_name">Name</label>
-                            <input type="text" class="form-control" name="player_name" value="{{ $player['player_info']['Player_Name'] }}">
+                            <input type="text" class="form-control" name="player_name"
+                                value="{{ $player['player_info']['Player_Name'] }}">
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="current_password">Enter Your Current Password</label>
                             <input type="password" class="form-control" name="current_password">
                         </div>
-                        
+
                         <!-- <div class="form-group">
                             <label for="new_password">Enter A New Password</label>
                             <input type="password" class="form-control" name="new_password" id="new_password">
@@ -265,38 +278,40 @@
                             <button type="submit" class="btn-custom">Update Information</button>
                         </div> -->
                         <div class="form-group">
-    <label for="new_password">Enter A New Password</label>
-    <input type="password" class="form-control" name="new_password" id="new_password">
-</div>
+                            <label for="new_password">Enter A New Password</label>
+                            <input type="password" class="form-control" name="new_password" id="new_password">
+                        </div>
 
-<div class="form-group">
-    <label for="new_password_confirmation">Re-Enter A New Password</label>
-    <input type="password" class="form-control" name="new_password_confirmation" id="new_password_confirmation">
-</div>
+                        <div class="form-group">
+                            <label for="new_password_confirmation">Re-Enter A New Password</label>
+                            <input type="password" class="form-control" name="new_password_confirmation"
+                                id="new_password_confirmation">
+                        </div>
 
-<div class="text-center">
-    <button type="submit" class="btn-custom">Update Information</button>
-</div>
+                        <div class="text-center">
+                            <button type="submit" class="btn-custom">Update Information</button>
+                        </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var editInfoForm = document.getElementById('edit-info-form');
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var editInfoForm = document.getElementById('edit-info-form');
 
-        editInfoForm.onsubmit = function (event) {
-            var newPassword = document.getElementById('new_password').value;
-            var confirmPassword = document.getElementById('new_password_confirmation').value;
+                            editInfoForm.onsubmit = function(event) {
+                                var newPassword = document.getElementById('new_password').value;
+                                var confirmPassword = document.getElementById('new_password_confirmation')
+                                    .value;
 
-            if (newPassword !== confirmPassword) {
-                alert('The passwords do not match. Please try again.');
-                event.preventDefault(); // Prevent form submission
-                return false; // Ensure the form does not submit
-            }
+                                if (newPassword !== confirmPassword) {
+                                    alert('The passwords do not match. Please try again.');
+                                    event.preventDefault(); // Prevent form submission
+                                    return false; // Ensure the form does not submit
+                                }
 
-            // If passwords match, proceed with the form submission
-            return true;
-        };
-    });
-</script>
+                                // If passwords match, proceed with the form submission
+                                return true;
+                            };
+                        });
+                        </script>
 
                     </form>
                 </div>
@@ -305,7 +320,8 @@
     </div>
 
     <!-- Edit Player Image Modal -->
-    <div class="modal fade" id="editImageModal" tabindex="-1" role="dialog" aria-labelledby="editImageModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editImageModal" tabindex="-1" role="dialog" aria-labelledby="editImageModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -315,15 +331,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="edit-image-form" method="POST" enctype="multipart/form-data" action="{{ route('player.updateImage') }}">
+                    <form id="edit-image-form" method="POST" enctype="multipart/form-data"
+                        action="{{ route('player.updateImage') }}">
                         @csrf
-                        <input type="hidden" name="player_info_id" value="{{ $player['player_info']['PlayerInfo_ID'] }}">
-                        
+                        <input type="hidden" name="player_info_id"
+                            value="{{ $player['player_info']['PlayerInfo_ID'] }}">
+
                         <div class="form-group">
                             <label for="player_image">Update Player Image</label>
-                            <input type="file" class="form-control" name="player_image" id="player_image" accept="image/*">
+                            <input type="file" class="form-control" name="player_image" id="player_image"
+                                accept="image/*">
                         </div>
-                        
+
                         <div class="text-center">
                             <button type="submit" class="btn-custom">Update Image</button>
                         </div>
@@ -337,10 +356,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         var editInfoForm = document.getElementById('edit-info-form');
 
-        editInfoForm.onsubmit = function (event) {
+        editInfoForm.onsubmit = function(event) {
             event.preventDefault();
 
             var newPassword = document.getElementById('new_password').value;
@@ -364,33 +383,34 @@
             }
 
             fetch(`http://143.198.209.104/api/playersinfo/update-credentials/${playerId}`, {
-                method: 'PUT',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Information updated successfully.');
-                    
-                    // Automatically log out the session after updating the information
-                    document.getElementById('logout-form').submit();
-                } else {
-                    alert(`Failed to update information: ${data.message}`);
-                }
-            })
-            .catch(error => {
-                console.error('Error updating information:', error);
-                alert('An error occurred while updating information.');
-            });
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Information updated successfully.');
+
+                        // Automatically log out the session after updating the information
+                        document.getElementById('logout-form').submit();
+                    } else {
+                        alert(`Failed to update information: ${data.message}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating information:', error);
+                    alert('An error occurred while updating information.');
+                });
 
             $('#editInfoModal').modal('hide');
         };
     });
     </script>
 </body>
+
 </html>
 @endsection
