@@ -232,33 +232,56 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="edit-info-form" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="player_info_id" value="{{ $player['player_info']['PlayerInfo_ID'] }}">
-                        
-                        <div class="form-group">
-                            <label for="player_email">Email Address</label>
-                            <input type="email" class="form-control" name="player_email" value="{{ $player['player_info']['Player_Email'] }}" readonly>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="player_name">Name</label>
-                            <input type="text" class="form-control" name="player_name" value="{{ $player['player_info']['Player_Name'] }}">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="current_password">Enter Your Password</label>
-                            <input type="password" class="form-control" name="current_password">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="new_password">Enter A New Password</label>
-                            <input type="password" class="form-control" name="new_password">
-                        </div>
-                        
-                        <div class="text-center">
-    <button type="submit" class="btn-custom">Update Information</button>
+    <form id="edit-info-form" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="player_info_id" value="{{ $player['player_info']['PlayerInfo_ID'] }}">
+        
+        <div class="form-group">
+            <label for="player_email">Email Address</label>
+            <input type="email" class="form-control" name="player_email" value="{{ $player['player_info']['Player_Email'] }}" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label for="player_name">Name</label>
+            <input type="text" class="form-control" name="player_name" value="{{ $player['player_info']['Player_Name'] }}">
+        </div>
+        
+        <div class="form-group">
+            <label for="current_password">Enter Your Password</label>
+            <input type="password" class="form-control" name="current_password">
+        </div>
+        
+        <div class="form-group">
+            <label for="new_password">Enter A New Password</label>
+            <input type="password" class="form-control" name="new_password" id="new_password">
+        </div>
+
+        <div class="form-group">
+            <label for="confirm_password">Re-Enter A New Password</label>
+            <input type="password" class="form-control" name="confirm_password" id="confirm_password">
+            <small id="password-error" class="text-danger" style="display:none;">Passwords do not match</small>
+        </div>
+        
+        <div class="text-center">
+            <button type="submit" class="btn-custom">Update Information</button>
+        </div>
+    </form>
 </div>
+
+<script>
+    document.getElementById('edit-info-form').addEventListener('submit', function(event) {
+        var newPassword = document.getElementById('new_password').value;
+        var confirmPassword = document.getElementById('confirm_password').value;
+
+        if (newPassword !== confirmPassword) {
+            event.preventDefault();
+            document.getElementById('password-error').style.display = 'block';
+        } else {
+            document.getElementById('password-error').style.display = 'none';
+        }
+    });
+</script>
+
 
 <!-- Logout Form -->
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
