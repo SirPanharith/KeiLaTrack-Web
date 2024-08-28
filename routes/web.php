@@ -29,7 +29,7 @@ Route::middleware(['authplayer'])->group(function () {
     Route::post('/save-note', [SessionGameDetailsController::class, 'savePlayerNote'])->name('saveNote');
     Route::post('/create-note', [SessionGameDetailsController::class, 'createPlayerNote'])->name('createNote');
     Route::get('/api/player-notes/{sessionId}/{playerId}', [PlayerNoteController::class, 'getNoteBySessionAndPlayer']);
-    Route::post('/api/update-player-info', [PlayerController::class, 'updatePlayerInfo']);
+    Route::post('/api/update-player-info', [PlayerController::class, 'updatePlayerInfo'])->name('player.updateInfo');
     // Route::post('/playersinfo/update/{id}', [PlayerController::class, 'updatePlayerImage']);
     Route::post('/api/update-player-image', [PlayerController::class, 'uploadPlayerImage'])->name('player.updateImage');
 

@@ -242,7 +242,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="edit-info-form" method="POST" enctype="multipart/form-data">
+                    <form id="edit-info-form" method="POST" enctype="multipart/form-data" action="{{ route('player.updateInfo') }}">>
                         @csrf
                         <input type="hidden" name="player_info_id"
                             value="{{ $player['player_info']['PlayerInfo_ID'] }}">
