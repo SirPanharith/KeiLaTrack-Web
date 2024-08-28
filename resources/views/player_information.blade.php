@@ -232,65 +232,40 @@
                     </button>
                 </div>
                 <div class="modal-body">
-    <form id="edit-info-form" method="POST" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" name="player_info_id" value="{{ $player['player_info']['PlayerInfo_ID'] }}">
-        
-        <div class="form-group">
-            <label for="player_email">Email Address</label>
-            <input type="email" class="form-control" name="player_email" value="{{ $player['player_info']['Player_Email'] }}" readonly>
-        </div>
-        
-        <div class="form-group">
-            <label for="player_name">Name</label>
-            <input type="text" class="form-control" name="player_name" value="{{ $player['player_info']['Player_Name'] }}">
-        </div>
-        
-        <div class="form-group">
-            <label for="current_password">Enter Your Password</label>
-            <input type="password" class="form-control" name="current_password">
-        </div>
-        
-        <div class="form-group">
-            <label for="new_password">Enter A New Password</label>
-            <input type="password" class="form-control" name="new_password" id="new_password">
-        </div>
+                    <form id="edit-info-form" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="player_info_id" value="{{ $player['player_info']['PlayerInfo_ID'] }}">
+                        
+                        <div class="form-group">
+                            <label for="player_email">Email Address</label>
+                            <input type="email" class="form-control" name="player_email" value="{{ $player['player_info']['Player_Email'] }}" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="player_name">Name</label>
+                            <input type="text" class="form-control" name="player_name" value="{{ $player['player_info']['Player_Name'] }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="current_password">Enter Your Password</label>
+                            <input type="password" class="form-control" name="current_password">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="new_password">Enter A New Password</label>
+                            <input type="password" class="form-control" name="new_password" id="new_password">
+                        </div>
 
-        <div class="form-group">
-            <label for="confirm_password">Re-Enter A New Password</label>
-            <input type="password" class="form-control" name="confirm_password" id="confirm_password">
-            <small id="password-error" class="text-danger" style="display:none;">Passwords do not match</small>
-        </div>
-        
-        <div class="text-center">
-            <button type="submit" class="btn-custom">Update Information</button>
-        </div>
-    </form>
-</div>
-
-<script>
-    document.getElementById('edit-info-form').addEventListener('submit', function(event) {
-        var newPassword = document.getElementById('new_password').value;
-        var confirmPassword = document.getElementById('confirm_password').value;
-
-        if (newPassword !== confirmPassword) {
-            event.preventDefault();
-            document.getElementById('password-error').style.display = 'block';
-        } else {
-            document.getElementById('password-error').style.display = 'none';
-        }
-    });
-</script>
-
-
-<!-- Logout Form -->
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    @csrf
-</form>
-
+                        <div class="form-group">
+                            <label for="new_password_confirmation">Re-Enter A New Password</label>
+                            <input type="password" class="form-control" name="new_password_confirmation" id="new_password_confirmation">
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn-custom">Update Information</button>
+                        </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
@@ -317,8 +292,8 @@
                         
                         <div class="text-center">
                             <button type="submit" class="btn-custom">Update Image</button>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -329,88 +304,59 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-    var editInfoForm = document.getElementById('edit-info-form');
+        var editInfoForm = document.getElementById('edit-info-form');
 
-    editInfoForm.onsubmit = function (event) {
-        event.preventDefault();
+        editInfoForm.onsubmit = function (event) {
+            event.preventDefault();
 
-        var formData = new FormData(editInfoForm);
-        var playerId = formData.get('player_info_id');
-        var data = {};
+            var newPassword = document.getElementById('new_password').value;
+            var confirmPassword = document.getElementById('new_password_confirmation').value;
 
-        if (formData.get('player_name')) {
-            data.Player_Name = formData.get('player_name');
-        }
-        if (formData.get('current_password') && formData.get('new_password')) {
-            data.current_password = formData.get('current_password');
-            data.new_password = formData.get('new_password');
-        }
-
-        fetch(`http://143.198.209.104/api/playersinfo/update-credentials/${playerId}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            if (newPassword !== confirmPassword) {
+                alert('The passwords do not match. Please try again.');
+                return; // Prevent form submission
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Information updated successfully.');
-                
-                // Automatically log out the session after updating the information
-                document.getElementById('logout-form').submit();
-            } else {
-                alert(`Failed to update information: ${data.message}`);
+
+            var formData = new FormData(editInfoForm);
+            var playerId = formData.get('player_info_id');
+            var data = {};
+
+            if (formData.get('player_name')) {
+                data.Player_Name = formData.get('player_name');
             }
-        })
-        .catch(error => {
-            console.error('Error updating information:', error);
-            alert('An error occurred while updating information.');
-        });
+            if (formData.get('current_password') && formData.get('new_password')) {
+                data.current_password = formData.get('current_password');
+                data.new_password = formData.get('new_password');
+            }
 
-        $('#editInfoModal').modal('hide');
-    };
-});
+            fetch(`http://143.198.209.104/api/playersinfo/update-credentials/${playerId}`, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Information updated successfully.');
+                    
+                    // Automatically log out the session after updating the information
+                    document.getElementById('logout-form').submit();
+                } else {
+                    alert(`Failed to update information: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating information:', error);
+                alert('An error occurred while updating information.');
+            });
 
-</script>
-
-<!-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var editImageForm = document.getElementById('edit-image-form');
-
-            editImageForm.onsubmit = function (event) {
-                event.preventDefault();
-
-                var formData = new FormData(editImageForm);
-
-                fetch('http://127.0.0.1:8000/api/playersinfo/update/3', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Image updated successfully.');
-                        document.getElementById('playerImage').src = data.image_url;
-                    } else {
-                        alert(`Failed to update image: ${data.error}`);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating image:', error);
-                    alert('An error occurred while updating image.');
-                });
-
-                $('#editImageModal').modal('hide');
-            };
-        });
-    </script> -->
-
+            $('#editInfoModal').modal('hide');
+        };
+    });
+    </script>
 </body>
 </html>
 @endsection
