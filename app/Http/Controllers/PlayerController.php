@@ -112,42 +112,31 @@ class PlayerController extends Controller
 
     public function uploadPlayerImage(Request $request)
 {
-    
     $request->validate([
         'player_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
-    // $playerInfoId = $request->input('player_info_id');
-    // $image = $request->file('player_image');
+    $playerInfoId = $request->input('player_info_id');
+    $image = $request->file('player_image');
 
-    // // Assuming you have set up file storage properly
-    // $path = $image->store('player_images', 'public');
+    // Get the file content
+    $imageContent = fopen($image->getPathname(), 'r');
 
-    // // Update the player's image URL in the database
-    // $player = Player::find($playerInfoId);
-    // $player->PlayerInfo_Image = $path;
-    // $player->save();
-
-
+    // Make a POST request to the API to update the player's image
+    $response = Http::attach('PlayerInfo_Image', $imageContent, $image->getClientOriginalName())
+                    ->post("http://143.198.209.104/api/playersinfo/update/{$playerInfoId}");
 
     // Check if the upload was successful
     if ($response->successful()) {
         $responseBody = $response->json();
-        session([
-            'Player_Image' => $responseBody['image_url']
-        ]);
-        
+
+        // Save the image URL in the session or any other necessary actions
+        session(['Player_Image' => $responseBody['image_url']]);
+
         return redirect()->back()->with('success', 'Image uploaded successfully');
     } else {
         return redirect()->back()->withErrors(['error' => 'Failed to upload image']);
     }
-
-    // Return a response with the image URL
-    // return response()->json([
-    //     'success' => true,
-    //     'message' => 'Player image updated successfully',
-    //     'image_url' => asset('storage/' . $path)
-    // ]);
 }
 
 
