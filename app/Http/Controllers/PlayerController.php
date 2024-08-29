@@ -52,7 +52,7 @@ class PlayerController extends Controller
             if ($response->status() === 200) {
                 return redirect()->back()->with('success', 'Player information updated successfully.');
             } else {
-                return redirect()->back()->with('error', 'Failed to update player information. Please try again.');
+                return redirect()->back()->with('error', $response->json()['message']);
             }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());

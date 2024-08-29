@@ -326,7 +326,7 @@
                                         }
 
                                         if ((newPassword && newPassword.length < 8) || (confirmPassword && confirmPassword.length <
-                                            9)) {
+                                                8)) {
                                             alert('The passwords must be more than 8 charanters.');
                                             event.preventDefault(); // Prevent form submission
                                             return false; // Ensure the form does not submit
