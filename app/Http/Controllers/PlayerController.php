@@ -34,20 +34,22 @@ class PlayerController extends Controller
 
     public function updatePlayerInfo(Request $request)
     {
-        $playerInfoId = $request->input('player_info_id');
+        $playerInfoId = session('playerInfoId');
         $playerName = $request->input('player_name');
-        $playerEmail = $request->input('player_email');
         $newPassword = $request->input('new_password');
-        $endpoint = "http://143.198.209.104/api/playersinfo/{$playerInfoId}";
-
+        $currentPassword = $request->input('current_password');
+        $endpoint = "http://143.198.209.104/api/playersinfo/update-credentials/{$playerInfoId}";
+        // dump($playerName);
+        // dump($currentPassword);
+        // dump($newPassword);
         try {
             $response = Http::asForm()->put($endpoint, [
                 '_method' => 'PUT',
                 'Player_Name' => $playerName,
-                'Player_Email' => $playerEmail,
-                'Player_Password' => $newPassword,
+                'current_password' => $currentPassword,
+                'new_password' => $newPassword,
             ]);
-            if ($response->successful()) {
+            if ($response->status() === 200) {
                 return redirect()->back()->with('success', 'Player information updated successfully.');
             } else {
                 return redirect()->back()->with('error', 'Failed to update player information. Please try again.');
