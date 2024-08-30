@@ -197,6 +197,23 @@
                     </div>
                 @endif
 
+                @if (session('isRedirectToLogin'))
+                    <form id="logout-form-redirect" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+
+                    <button id="logout-button-redirect" style="display: none;">Logout</button>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Submit the logout form after a few seconds
+                            setTimeout(function() {
+                                document.getElementById('logout-form-redirect').submit();
+                            }, 3000); // Adjust the delay as needed
+                        });
+                    </script>
+                @endif
+
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         // Hide success alert after 3 seconds

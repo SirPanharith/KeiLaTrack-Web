@@ -50,7 +50,15 @@ class PlayerController extends Controller
                 'new_password' => $newPassword,
             ]);
             if ($response->status() === 200) {
-                return redirect()->back()->with('success', 'Player information updated successfully.');
+                $redirectData = ['success' => 'Player information updated successfully.'];
+                if (!empty($newPassword)) {
+                    $redirectData = [
+                        'success' => 'Password updated successfully. Redirecting to login page...',
+                        'isRedirectToLogin' => true
+                    ];
+                }
+                return redirect()->back()->with($redirectData);
+                // return redirect()->back()->with('success', 'Player information updated successfully.');
             } else {
                 return redirect()->back()->with('error', $response->json()['message']);
             }
