@@ -292,7 +292,7 @@
 
                             <div class="form-group">
                                 <label for="current_password">Enter Your Current Password</label>
-                                <input type="password" class="form-control" name="current_password">
+                                <input type="password" class="form-control" id="current_password" name="current_password">
                             </div>
 
                             <div class="form-group">
@@ -316,8 +316,14 @@
 
                                     editInfoForm.onsubmit = function(event) {
                                         var newPassword = document.getElementById('new_password').value;
-                                        var confirmPassword = document.getElementById('new_password_confirmation')
-                                            .value;
+                                        var confirmPassword = document.getElementById('new_password_confirmation').value;
+                                        var currentPassword = document.getElementById('current_password').value;
+
+                                        if ((currentPassword && !newPassword) || (!currentPassword && newPassword)) {
+                                            alert('Both current and new password are required.');
+                                            event.preventDefault(); // Prevent form submission
+                                            return false; // Ensure the form does not submit
+                                        }
 
                                         if (newPassword !== confirmPassword) {
                                             alert('The passwords do not match. Please try again.');
