@@ -24,7 +24,7 @@
       background-color: #4CAF50;
     }
     .input-group {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: white;
       padding: 0.75rem 1rem;
       border-radius: 50px;
       transition: background-color 0.3s ease-in-out;
@@ -37,7 +37,7 @@
       width: 100%;
     }
     .input-group input::placeholder {
-      color: rgba(255, 255, 255, 0.7);
+      color: #4CAF50;
     }
     .input-group:hover {
       background-color: rgba(255, 255, 255, 0.3);
@@ -77,7 +77,7 @@
         </div>
       </div>
       <div class="mb-6">
-        <label class="block text-white text-sm mb-2" for="password">Password</label>
+        <label class="block text-white text-sm mb-2 " for="password">Password</label>
         <div class="input-group">
           <input type="password" id="password" name="Player_Password" class="flex-1" placeholder="Password" required>
         </div>
