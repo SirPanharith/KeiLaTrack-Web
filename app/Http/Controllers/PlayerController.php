@@ -92,14 +92,19 @@ class PlayerController extends Controller
             // Log the response data for debugging
             \Log::info('API Response Data:', $data);
 
+            //dd($data);
+
             // Validate the response structure
-            if (isset($data['PlayerInfo_ID'], $data['Player_Name'], $data['Data'], $data['AccountStatus_ID']) && is_array($data['Data'])) {
+            if (isset($data['PlayerInfo_ID'], $data['Player_Name'], $data['Data']) && is_array($data['Data'])) {
+                // Allow login even if AccountStatus_ID is null
+                $accountStatusId = $data['AccountStatus_ID'] ?? 2; // Assuming 2 means 'not subscribed' when null
+
                 // Pass the data to the view
                 return view('home', [
                     'playerInfoId' => $data['PlayerInfo_ID'],
                     'playerName' => $data['Player_Name'],
                     'playerData' => $data['Data'],
-                    'accountStatusId' => $data['AccountStatus_ID'], // Pass AccountStatus_ID here
+                    'accountStatusId' => $accountStatusId, // Pass the AccountStatus_ID (null is handled as 'not subscribed')
                 ]);
             } else {
                 \Log::warning('Unexpected API response structure', $data);
@@ -114,6 +119,7 @@ class PlayerController extends Controller
         return redirect()->back()->withErrors(['message' => 'An unexpected error occurred. Please try again later.']);
     }
 }
+
 
 
 
