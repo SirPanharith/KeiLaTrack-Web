@@ -172,6 +172,54 @@
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
             }
+
+            .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 400px; /* Maximum width */
+}
+
+.close {
+    color: #aaa;
+    position: absolute; /* Position absolute within modal content */
+    top: 10px; /* Adjust for positioning */
+    right: 15px; /* Adjust for positioning */
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.subscription-heading {
+    font-size: 30px; /* Adjust size as needed */
+    color: #4CAF50; /* Set the color */
+    margin-bottom: 15px; /* Optional: space below the heading */
+}
+
+
+
         </style>
     </head>
 
@@ -261,6 +309,53 @@
                         </tr>
                     @endforeach
                 </table>
+
+                <!-- Subscription Status Button -->
+                <button type="button" class="btn-custom btn-small" style="padding: 5px 20px;" id="viewSubscriptionBtn">
+                    View Subscription Status
+                </button>
+
+
+                <!-- Subscription Status Modal -->
+<div id="subscriptionStatusModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModalBtn">&times;</span>
+        <h2 class="subscription-heading">Current Subscription Plan</h2>
+
+        @if ($errors->any())
+            <p style="color: red;">
+                {{ $errors->first() }}
+            </p>
+            <p>
+                <strong>Please return to the homepage to see the subscription options.</strong>
+            </p>
+        @else
+            <p>
+                <strong>Current Plan:</strong>
+                <span id="currentPlan">
+                    {{ isset($plan) ? ucfirst($plan) : 'N/A' }}
+                </span>
+            </p>
+            <p>
+                <strong>Next Subscription Date:</strong>
+                <span id="nextSubscriptionDate">
+                    {{ isset($nextPaymentDate) ? $nextPaymentDate : 'N/A' }}
+                </span>
+            </p>
+        @endif
+        <button type="button" class="btn-custom" id="cancelSubscriptionBtn">Cancel Subscription</button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
                 <div class="button-group">
@@ -458,6 +553,97 @@
                 };
             });
         </script> --}}
+
+<script>
+    // Get modal elements
+    const modal = document.getElementById('subscriptionStatusModal');
+    const viewSubscriptionBtn = document.getElementById('viewSubscriptionBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelSubscriptionBtn = document.getElementById('cancelSubscriptionBtn');
+
+    /// Open modal when the button is clicked
+viewSubscriptionBtn.onclick = function() {
+    // Fetch the subscription data from the server
+    fetch("{{ route('subscription.modal') }}")
+        .then(response => {
+            if (!response.ok) {
+                // Redirect to home if the response is not okay (not subscribed)
+                window.location.href = "{{ route('home') }}"; // Redirect to home.blade.php
+                return; // Prevent further processing
+            }
+            return response.json(); // Ensure you are returning JSON here
+        })
+        .then(data => {
+            // Check if the response contains an error
+            if (data.error) {
+                // Redirect to home if an error is returned from the API (not subscribed)
+                window.location.href = "{{ route('home') }}"; // Redirect to home.blade.php
+            } else {
+                // Update modal with subscription data
+                document.getElementById('currentPlan').innerHTML = data.plan ? (data.plan === 'yearly' ? 'Yearly' : 'Monthly') : 'N/A';
+                document.getElementById('nextSubscriptionDate').innerHTML = data.nextPaymentDate ? data.nextPaymentDate : 'N/A';
+
+                // Show the modal
+                modal.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching subscription data:', error);
+            // Redirect to home on error
+            window.location.href = "{{ route('home') }}"; // Redirect to home.blade.php
+        });
+}
+
+
+
+    // Close modal when the close button (X) is clicked
+    closeModalBtn.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    // Cancel subscription functionality
+    // Cancel subscription functionality
+cancelSubscriptionBtn.onclick = function() {
+    const playerId = {{ $player['player_info']['PlayerInfo_ID'] }}; // Ensure you have the PlayerInfo_ID
+
+    fetch("{{ route('subscription.cancel') }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for security
+        },
+        body: JSON.stringify({ PlayerInfo_ID: playerId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            alert(data.message); // Show success message
+            modal.style.display = 'none'; // Close modal after cancellation
+        }
+    })
+    .catch(error => {
+        console.error('Error canceling subscription:', error);
+        alert('Failed to cancel subscription. Please try again.');
+    });
+}
+
+
+    // Close modal if user clicks outside of it
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+
+
+
+
+
+
+
     </body>
 
     </html>

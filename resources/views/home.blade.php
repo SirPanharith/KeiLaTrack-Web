@@ -97,6 +97,50 @@
         .team-summary a:hover {
             color: #333;
         }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 70px; /* Position below the navbar */
+            width: 100%; /* Full width */
+            height: calc(100% - 70px); /* Full height minus navbar height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 0 auto; /* Center horizontally */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            text-align: center;
+            position: relative;
+            top: 20%; /* Adjust as needed for vertical centering */
+        }
+
+        /* Disable pointer events on main contents when modal is shown */
+        /* .locked {
+            pointer-events: none; 
+        } */
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -178,6 +222,160 @@
             @endforeach
         </div>
     </div>
+
+    <!-- Subscription Modal -->
+<div id="subscriptionModal" class="modal">
+    <div class="modal-content">
+        <h2 style="margin-bottom: 15px; color: #4CAF50">Subscription Required</h2>
+        <p style="margin-bottom: 20px; font-size: 18px; line-height: 1.5;">
+            Unlock exclusive features and elevate your experience with our subscription plans! 
+            Choose what works best for you:
+        </p>
+
+        <form action="{{ route('create.subscription') }}" method="POST">
+    @csrf
+    <div class="button-container" style="margin: 20px 0;">
+    <button type="button" id="monthlyPlanButton" style="background-color: #4CAF50; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+        $3 Monthly
+    </button>
+    <button type="button" id="yearlyPlanButton" style="background-color: #4CAF50; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+        $36 Yearly
+    </button>
+</div>
+
+    </div>
+    <p style="color: #555; text-align: center;">
+        Enjoy a <strong>free 14-day trial</strong> with your first Subscription!
+    </p>
+</form>
+
+    </div>
+</div>
+
+    <script>
+        // Get the modal and main contents
+        var modal = document.getElementById("subscriptionModal");
+        var mainContents = document.getElementById("mainContents");
+
+        // Check AccountStatus_ID and show modal if necessary
+        var accountStatusId = @json($accountStatusId); // Ensure this value is fetched correctly
+
+        // Only show the modal if the account status is 2 or null
+        if (accountStatusId === 2 || accountStatusId === null) {
+            modal.style.display = "block"; // Show the modal
+            mainContents.classList.add("locked"); // Lock the content
+        } else {
+            modal.style.display = "none"; // Ensure the modal is hidden for subscribed users
+            mainContents.classList.remove("locked"); // Unlock the content
+        }
+
+        // Prevent closing the modal by clicking outside
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                // Do nothing, modal cannot be closed
+            }
+        }
+    </script>
+
+    <!-- JavaScript to handle the button click -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('#monthlyPlanButton').addEventListener('click', function() {
+    createSubscription('monthly');
+});
+
+document.querySelector('#yearlyPlanButton').addEventListener('click', function() {
+    createSubscription('yearly');
+});
+document.querySelector('#monthlyPlanButton').addEventListener('click', function() {
+    createSubscription('monthly');
+});
+
+document.querySelector('#yearlyPlanButton').addEventListener('click', function() {
+    createSubscription('yearly');
+});
+
+function createSubscription(plan) {
+    fetch('{{ route('create.subscription') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ plan: plan })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.checkout_url) {
+            // Open the URL in a new tab
+            window.open(data.checkout_url, '_blank');
+        } else {
+            alert('Failed to generate subscription URL.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An unexpected error occurred.');
+    });
+}
+
+});
+
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const monthlyPlanButton = document.getElementById('monthlyPlanButton');
+    const yearlyPlanButton = document.getElementById('yearlyPlanButton');
+
+    monthlyPlanButton.addEventListener('click', function () {
+        createSubscription('monthly');
+    });
+
+    yearlyPlanButton.addEventListener('click', function () {
+        createSubscription('yearly');
+    });
+
+    function createSubscription(plan) {
+        fetch('{{ route('create.subscription') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for security
+            },
+            body: JSON.stringify({ plan: plan }) // Send the plan as JSON
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.checkout_url) {
+                // Open the URL in a new tab
+                window.open(data.checkout_url, '_blank');
+            } else {
+                alert('Failed to generate subscription URL.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An unexpected error occurred.');
+        });
+    }
+});
+</script>
+
+
+
+
 </body>
 </html>
 

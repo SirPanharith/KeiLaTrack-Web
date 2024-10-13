@@ -32,6 +32,13 @@ Route::middleware(['authplayer'])->group(function () {
     Route::post('/api/update-player-info', [PlayerController::class, 'updatePlayerInfo'])->name('player.updateInfo');
     // Route::post('/playersinfo/update/{id}', [PlayerController::class, 'updatePlayerImage']);
     Route::post('/api/update-player-image', [PlayerController::class, 'uploadPlayerImage'])->name('player.updateImage');
+    Route::post('/create-subscription', [PlayerController::class, 'createSubscription'])->name('create.subscription');
+    Route::get('/player/subscription-modal', [PlayerController::class, 'showSubscriptionModal'])->name('subscription.modal');
+    Route::post('/player/cancel-subscription', [PlayerController::class, 'cancelSubscription'])->name('subscription.cancel');
+
+
+
+
 
 });
 
