@@ -241,12 +241,13 @@
     <button type="button" id="yearlyPlanButton" style="background-color: #4CAF50; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
         $36 Yearly
     </button>
-</div>
-
-    </div>
     <p style="color: #555; text-align: center;">
         Enjoy a <strong>free 14-day trial</strong> with your first Subscription!
     </p>
+</div>
+
+    </div>
+
 </form>
 
     </div>
